@@ -243,6 +243,15 @@ footer strong { color: var(--ink); }
 .lesson[open] { border-color: var(--btn-bg); }
 .lesson .body { padding: 0 18px 18px; display: grid; gap: 10px; color: var(--ink); }
 @media (max-width: 760px) { .lessons { grid-template-columns: minmax(0, 1fr); } .lesson summary b { font-size: 21px; } .lesson .body { font-size: 17px; } }
+
+/* Phone header: one swipeable row that scrolls away with the page */
+@media (max-width: 760px) {
+  .top { position: static; }
+  .bar { flex-direction: column; align-items: flex-start; gap: 2px; padding-block: 10px 4px; }
+  .nav { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; padding-bottom: 6px; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav button { white-space: nowrap; flex: none; }
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 #ask .two { grid-template-columns: minmax(0, 680px); }
 </style>
