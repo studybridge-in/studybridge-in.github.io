@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Solve a quadratic by factorising",
+    "subject": "Maths",
+    "minutes": 6,
+    "body": [
+      "A quadratic looks like x² + bx + c = 0. To factorise it, find two numbers that multiply to c and add to b.",
+      "Example: x² − 5x + 6 = 0. Two numbers that multiply to 6 and add to −5 are −2 and −3.",
+      "So the equation becomes (x − 2)(x − 3) = 0. Either x − 2 = 0 or x − 3 = 0, so x = 2 or x = 3.",
+      "Check: put x = 2 in the equation. 4 − 10 + 6 = 0, so it works.",
+      "Common mistake: writing the brackets with the wrong signs. Always expand the brackets to check."
+    ]
+  },
+  {
+    "title": "Active recall in 10 minutes",
+    "subject": "Study habits",
+    "minutes": 4,
+    "body": [
+      "Rereading feels easy but remembers little. Testing yourself works better.",
+      "Step 1: read one small section for 5 minutes.",
+      "Step 2: close the book and write everything you remember, for 3 minutes.",
+      "Step 3: open the book and mark what you missed, for 2 minutes.",
+      "Repeat the same section after 1 day, 3 days and 1 week. The gaps get smaller each time."
+    ]
+  },
+  {
+    "title": "A 4-minute calm reset before you study",
+    "subject": "Stress",
+    "minutes": 4,
+    "body": [
+      "Sit with both feet on the floor and put your phone away.",
+      "Breathe in through your nose for 4 counts and out slowly for 6 counts. Do this for 2 minutes.",
+      "Look around and name 3 things you can see. This brings your mind back to the room.",
+      "Write down the one next task, such as 'solve 5 questions of Chapter 3', and work on it for 10 minutes.",
+      "If the worry stays heavy for days, talk to a teacher, parent or counsellor. In India, Tele-MANAS (14416) is free and open 24x7."
+    ]
+  }
+]

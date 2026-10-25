@@ -227,6 +227,22 @@ footer strong { color: var(--ink); }
   .plan .btn, .lead .btn { width: auto; }
   .plan .btn { width: 100%; }
 }
+
+/* Notices and lessons */
+.notices { border: 1.5px solid var(--line); border-left: 5px solid var(--margin); border-radius: 8px; padding: 16px 18px; display: grid; gap: 10px; margin-bottom: 8px; background: var(--panel); }
+.notices ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.notices li { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; min-width: 0; }
+.notices .when { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); font-variant-numeric: tabular-nums; }
+.notices a { font-weight: 600; }
+.lessons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.lesson { border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper); min-width: 0; }
+.lesson summary { cursor: pointer; padding: 16px 18px; display: grid; gap: 6px; list-style: none; min-height: 44px; }
+.lesson summary::-webkit-details-marker { display: none; }
+.lesson summary b { font-family: var(--font-display); font-size: 19px; line-height: 1.2; }
+.lesson summary span { font-size: 13px; color: var(--muted); }
+.lesson[open] { border-color: var(--btn-bg); }
+.lesson .body { padding: 0 18px 18px; display: grid; gap: 10px; color: var(--ink); }
+@media (max-width: 760px) { .lessons { grid-template-columns: minmax(0, 1fr); } .lesson summary b { font-size: 21px; } .lesson .body { font-size: 17px; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 #ask .two { grid-template-columns: minmax(0, 680px); }
 </style>
@@ -240,6 +256,7 @@ footer strong { color: var(--ink); }
     <nav class="nav" aria-label="Main">
       <button type="button" data-go="who">Who it is for</button>
       <button type="button" data-go="help">How we help</button>
+      <button type="button" data-go="learn">Learn</button>
       <button type="button" data-go="plans">Plans</button>
       <button type="button" data-go="ask">Pressure check</button>
       <button type="button" data-go="contact">Contact</button>
@@ -268,6 +285,11 @@ footer strong { color: var(--ink); }
       <div class="step"><span class="tick">✓</span>(x − 2)(x − 3) = 0, so x = 2 or 3</div>
       <div class="note hand">Good method. Check the signs when you write the brackets.</div>
     </div>
+  </div>
+
+  <div class="notices" id="notices" hidden>
+    <div class="eyebrow">Latest notices</div>
+    <ul id="noticeList"></ul>
   </div>
 
   <section id="who">
@@ -310,6 +332,15 @@ footer strong { color: var(--ink); }
         <p class="eg">Example: revise 6 chapters in 12 days with 3 review rounds.</p>
       </div>
     </div>
+  </section>
+
+  <section id="learn">
+    <div class="sec-head">
+      <div class="eyebrow">Learn</div>
+      <h2>Short lessons you can use today</h2>
+      <p>Tap a lesson to open it. New lessons are added often, so check back.</p>
+    </div>
+    <div class="lessons" id="lessonList"></div>
   </section>
 
   <section id="plans">
@@ -499,15 +530,44 @@ footer strong { color: var(--ink); }
     $("checkOut").innerHTML = '<div class="result"><strong>' + esc(band[1]) + " (" + total + " of 15)</strong><p>" + esc(band[2]) + "</p></div>";
   });
 
-  /* Contact details shown in the Contact section. Leave empty to hide. */
-  var CONTACT = { whatsapp: "+91 86884 61707", email: "1234devprasad@gmail.com", city: "" };
-  (function () {
+  /* Content that changes often lives in small files: site.json, notices.json, lessons.json.
+     If a file is missing or has a typo, the built-in copy below is used. */
+  var CONTACT = { whatsapp: "+91 86884 61707", email: "1234devprasad@gmail.com", city: "", channel: "https://whatsapp.com/channel/0029Vb9XIsk4yltTioA6AE2p" };
+  var DEFAULT_NOTICES = [{"date": "2026-10-26", "text": "Free first sessions are open for students and teachers. Message us on WhatsApp to book."}, {"date": "2026-10-26", "text": "Follow our WhatsApp channel for weekly study and stress tips.", "link": "https://whatsapp.com/channel/0029Vb9XIsk4yltTioA6AE2p", "linkText": "Open channel"}];
+  var DEFAULT_LESSONS = [{"title": "Solve a quadratic by factorising", "subject": "Maths", "minutes": 6, "body": ["A quadratic looks like x² + bx + c = 0. To factorise it, find two numbers that multiply to c and add to b.", "Example: x² − 5x + 6 = 0. Two numbers that multiply to 6 and add to −5 are −2 and −3.", "So the equation becomes (x − 2)(x − 3) = 0. Either x − 2 = 0 or x − 3 = 0, so x = 2 or x = 3.", "Check: put x = 2 in the equation. 4 − 10 + 6 = 0, so it works.", "Common mistake: writing the brackets with the wrong signs. Always expand the brackets to check."]}, {"title": "Active recall in 10 minutes", "subject": "Study habits", "minutes": 4, "body": ["Rereading feels easy but remembers little. Testing yourself works better.", "Step 1: read one small section for 5 minutes.", "Step 2: close the book and write everything you remember, for 3 minutes.", "Step 3: open the book and mark what you missed, for 2 minutes.", "Repeat the same section after 1 day, 3 days and 1 week. The gaps get smaller each time."]}, {"title": "A 4-minute calm reset before you study", "subject": "Stress", "minutes": 4, "body": ["Sit with both feet on the floor and put your phone away.", "Breathe in through your nose for 4 counts and out slowly for 6 counts. Do this for 2 minutes.", "Look around and name 3 things you can see. This brings your mind back to the room.", "Write down the one next task, such as 'solve 5 questions of Chapter 3', and work on it for 10 minutes.", "If the worry stays heavy for days, talk to a teacher, parent or counsellor. In India, Tele-MANAS (14416) is free and open 24x7."]}];
+  function loadJson(name, fallback) {
+    return fetch(name, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("missing"); return r.json(); }).catch(function () { return fallback; });
+  }
+  function renderContact() {
     var out = [];
-    if (CONTACT.whatsapp) out.push('WhatsApp: <a href="https://wa.me/' + esc(CONTACT.whatsapp.replace(/\D/g, "")) + '" target="_blank" rel="noopener">' + esc(CONTACT.whatsapp) + "</a>");
+    if (CONTACT.whatsapp) out.push('WhatsApp: <a href="https://wa.me/' + esc(String(CONTACT.whatsapp).replace(/\D/g, "")) + '" target="_blank" rel="noopener">' + esc(CONTACT.whatsapp) + "</a>");
     if (CONTACT.email) out.push("Email: " + esc(CONTACT.email));
     if (CONTACT.city) out.push(esc(CONTACT.city));
+    if (CONTACT.channel) out.push('Free tips and notices: <a href="' + esc(CONTACT.channel) + '" target="_blank" rel="noopener">Follow StudyBridge on WhatsApp</a>');
     $("contactLines").innerHTML = out.join("<br>");
-  })();
+  }
+  function renderNotices(list) {
+    if (!Array.isArray(list)) list = DEFAULT_NOTICES;
+    list = list.filter(function (n) { return n && n.text; });
+    $("notices").hidden = !list.length;
+    $("noticeList").innerHTML = list.map(function (n) {
+      var link = n.link ? ' <a href="' + esc(n.link) + '" target="_blank" rel="noopener">' + esc(n.linkText || "Open") + "</a>" : "";
+      return "<li>" + (n.date ? '<span class="when">' + esc(n.date) + "</span>" : "") + "<span>" + esc(n.text) + link + "</span></li>";
+    }).join("");
+  }
+  function renderLessons(list) {
+    if (!Array.isArray(list)) list = DEFAULT_LESSONS;
+    list = list.filter(function (l) { return l && l.title; });
+    $("lessonList").innerHTML = list.map(function (l) {
+      var body = (Array.isArray(l.body) ? l.body : []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+      var meta = [l.subject, l.minutes ? l.minutes + " min read" : ""].filter(Boolean).map(esc).join(" · ");
+      return '<details class="lesson"><summary><b>' + esc(l.title) + "</b><span>" + meta + '</span></summary><div class="body">' + body + "</div></details>";
+    }).join("");
+  }
+  renderContact(); renderNotices(DEFAULT_NOTICES); renderLessons(DEFAULT_LESSONS);
+  loadJson("site.json", {}).then(function (d) { if (d && typeof d === "object") { Object.keys(d).forEach(function (k) { CONTACT[k] = d[k]; }); renderContact(); } });
+  loadJson("notices.json", DEFAULT_NOTICES).then(renderNotices);
+  loadJson("lessons.json", DEFAULT_LESSONS).then(renderLessons);
 
   /* Real feedback only. Add entries after real sessions, with permission:
      { quote: "…", name: "First name", role: "Class 10 student" } */
@@ -613,7 +673,7 @@ footer strong { color: var(--ink); }
     var st = $("enqStatus"), btn = $("enqBtn");
     if (!db) {
       var msg = "Hi StudyBridge, I would like a free session.\nName: " + $("enqName").value.trim() + "\nI am a: " + $("enqRole").value + "\nSchool/Institute: " + $("enqOrg").value.trim() + "\nContact: " + $("enqContact").value.trim() + "\nNeed: " + $("enqNeed").value + "\nDetails: " + $("enqNote").value.trim();
-      window.open("https://wa.me/918688461707?text=" + encodeURIComponent(msg), "_blank");
+      window.open("https://wa.me/" + String(CONTACT.whatsapp).replace(/\D/g, "") + "?text=" + encodeURIComponent(msg), "_blank");
       st.className = "status ok"; st.textContent = "Opening WhatsApp. Press send there to finish."; return;
     }
     btn.disabled = true; st.className = "status"; st.textContent = "Sending";
