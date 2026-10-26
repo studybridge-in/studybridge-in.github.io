@@ -252,6 +252,16 @@ footer strong { color: var(--ink); }
   .nav::-webkit-scrollbar { display: none; }
   .nav button { white-space: nowrap; flex: none; }
 }
+
+/* FAQ */
+.faqs { display: grid; gap: 10px; max-width: 760px; }
+.faq { border-bottom: 1.5px solid var(--line); }
+.faq summary { cursor: pointer; padding: 16px 4px; font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.25; list-style: none; display: flex; justify-content: space-between; gap: 12px; align-items: center; min-height: 48px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--font-body); font-size: 24px; color: var(--margin); flex: none; }
+.faq[open] summary::after { content: "−"; }
+.faq p { padding: 0 4px 18px; color: var(--muted); max-width: 62ch; }
+@media (max-width: 760px) { .faq summary { font-size: 20px; } .faq p { font-size: 17px; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 #ask .two { grid-template-columns: minmax(0, 680px); }
 </style>
@@ -268,6 +278,7 @@ footer strong { color: var(--ink); }
       <button type="button" data-go="doubt">Ask a doubt</button>
       <button type="button" data-go="learn">Learn</button>
       <button type="button" data-go="plans">Plans</button>
+      <button type="button" data-go="faq">FAQ</button>
       <button type="button" data-go="ask">Pressure check</button>
       <button type="button" data-go="contact">Contact</button>
       <button type="button" class="crm-btn" id="crmBtn" hidden>CRM</button>
@@ -426,6 +437,14 @@ footer strong { color: var(--ink); }
     <div class="voices" id="voiceList"></div>
   </section>
 
+  <section id="faq">
+    <div class="sec-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Questions people ask us</h2>
+    </div>
+    <div class="faqs" id="faqList"></div>
+  </section>
+
   <section id="ask">
     <div class="two">
       <div class="panel" style="display:none">
@@ -567,6 +586,7 @@ footer strong { color: var(--ink); }
      If a file is missing or has a typo, the built-in copy below is used. */
   var CONTACT = { whatsapp: "+91 86884 61707", email: "1234devprasad@gmail.com", city: "", channel: "https://whatsapp.com/channel/0029Vb9XIsk4yltTioA6AE2p" };
   var DEFAULT_NOTICES = [{"date": "2026-10-26", "text": "Free first sessions are open for students and teachers. Message us on WhatsApp to book."}, {"date": "2026-10-26", "text": "Follow our WhatsApp channel for weekly study and stress tips.", "link": "https://whatsapp.com/channel/0029Vb9XIsk4yltTioA6AE2p", "linkText": "Open channel"}];
+  var DEFAULT_FAQS = [{"q": "What is StudyBridge?", "a": "StudyBridge helps students understand hard subjects, handle exam stress and build better study habits. It also helps teachers prepare faster and see where a class is stuck."}, {"q": "Is the first session really free?", "a": "Yes. Your first session is free, so you can see if it helps before you pay anything. Message us on WhatsApp to book it."}, {"q": "How much does it cost after that?", "a": "The Student plan is ₹50 per month and the Teacher plan is ₹100 per month. See the Plans section for what each includes."}, {"q": "How do I ask a question?", "a": "Go to Ask your doubt, choose your level and subject, type your question and tap Send doubt on WhatsApp. WhatsApp opens with your question ready to send."}, {"q": "Who can use StudyBridge?", "a": "School and college students, teachers, and anyone learning on their own. If you are under 18, please ask a parent or guardian before you book a session."}, {"q": "Are the answers always correct?", "a": "We work hard to be accurate, but no one is right every time. For important exams, check key facts with your teacher or textbook. If you think an answer is wrong, tell us and we will fix it."}, {"q": "Can you help with exam stress?", "a": "We share simple routines and study plans that make exams feel more manageable. This is study support, not medical or counselling treatment. If you feel unsafe or hopeless, talk to a trusted adult now. In India, Tele-MANAS (14416) is free and open 24x7."}, {"q": "Do you promise good marks?", "a": "No. Nobody can promise marks. We help you understand the subject and study better, and your effort does the rest."}, {"q": "What happens to my question and details?", "a": "We use your question only to answer you. Please send only your question, and do not share your address, school name or other private details."}, {"q": "How can teachers or schools use StudyBridge?", "a": "Teachers can get lesson and practice-question help and see where students are stuck. Schools can message us on WhatsApp to talk about a programme for their students."}];
   var DEFAULT_LESSONS = [{"title": "Solve a quadratic by factorising", "subject": "Maths", "minutes": 6, "body": ["A quadratic looks like x² + bx + c = 0. To factorise it, find two numbers that multiply to c and add to b.", "Example: x² − 5x + 6 = 0. Two numbers that multiply to 6 and add to −5 are −2 and −3.", "So the equation becomes (x − 2)(x − 3) = 0. Either x − 2 = 0 or x − 3 = 0, so x = 2 or x = 3.", "Check: put x = 2 in the equation. 4 − 10 + 6 = 0, so it works.", "Common mistake: writing the brackets with the wrong signs. Always expand the brackets to check."]}, {"title": "Active recall in 10 minutes", "subject": "Study habits", "minutes": 4, "body": ["Rereading feels easy but remembers little. Testing yourself works better.", "Step 1: read one small section for 5 minutes.", "Step 2: close the book and write everything you remember, for 3 minutes.", "Step 3: open the book and mark what you missed, for 2 minutes.", "Repeat the same section after 1 day, 3 days and 1 week. The gaps get smaller each time."]}, {"title": "A 4-minute calm reset before you study", "subject": "Stress", "minutes": 4, "body": ["Sit with both feet on the floor and put your phone away.", "Breathe in through your nose for 4 counts and out slowly for 6 counts. Do this for 2 minutes.", "Look around and name 3 things you can see. This brings your mind back to the room.", "Write down the one next task, such as 'solve 5 questions of Chapter 3', and work on it for 10 minutes.", "If the worry stays heavy for days, talk to a teacher, parent or counsellor. In India, Tele-MANAS (14416) is free and open 24x7."]}];
   function loadJson(name, fallback) {
     return fetch(name, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("missing"); return r.json(); }).catch(function () { return fallback; });
@@ -597,10 +617,16 @@ footer strong { color: var(--ink); }
       return '<details class="lesson"><summary><b>' + esc(l.title) + "</b><span>" + meta + '</span></summary><div class="body">' + body + "</div></details>";
     }).join("");
   }
-  renderContact(); renderNotices(DEFAULT_NOTICES); renderLessons(DEFAULT_LESSONS);
+  function renderFaqs(list) {
+    if (!Array.isArray(list)) list = DEFAULT_FAQS;
+    list = list.filter(function (f) { return f && f.q && f.a; });
+    $("faqList").innerHTML = list.map(function (f) { return '<details class="faq"><summary>' + esc(f.q) + "</summary><p>" + esc(f.a) + "</p></details>"; }).join("");
+  }
+  renderContact(); renderNotices(DEFAULT_NOTICES); renderLessons(DEFAULT_LESSONS); renderFaqs(DEFAULT_FAQS);
   loadJson("site.json", {}).then(function (d) { if (d && typeof d === "object") { Object.keys(d).forEach(function (k) { CONTACT[k] = d[k]; }); renderContact(); } });
   loadJson("notices.json", DEFAULT_NOTICES).then(renderNotices);
   loadJson("lessons.json", DEFAULT_LESSONS).then(renderLessons);
+  loadJson("faqs.json", DEFAULT_FAQS).then(renderFaqs);
 
   /* Real feedback only. Add entries after real sessions, with permission:
      { quote: "…", name: "First name", role: "Class 10 student" } */
