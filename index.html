@@ -265,6 +265,7 @@ footer strong { color: var(--ink); }
     <nav class="nav" aria-label="Main">
       <button type="button" data-go="who">Who it is for</button>
       <button type="button" data-go="help">How we help</button>
+      <button type="button" data-go="doubt">Ask a doubt</button>
       <button type="button" data-go="learn">Learn</button>
       <button type="button" data-go="plans">Plans</button>
       <button type="button" data-go="ask">Pressure check</button>
@@ -281,7 +282,7 @@ footer strong { color: var(--ink); }
       <h1>Understand the subject. Stay <span class="hl">calm</span>. Study in a way that works.</h1>
       <p class="lead">StudyBridge explains hard topics step by step and helps you stay calm before exams. It also helps teachers prepare faster and see where the class is stuck.</p>
       <div class="cta-row">
-        <button class="btn" type="button" data-go="ask">Check your pressure level</button>
+        <button class="btn" type="button" data-go="doubt">Ask your doubt</button>
         <button class="btn ghost" type="button" data-go="contact">Book a free session</button>
       </div>
     </div>
@@ -300,6 +301,29 @@ footer strong { color: var(--ink); }
     <div class="eyebrow">Latest notices</div>
     <ul id="noticeList"></ul>
   </div>
+
+  <section id="doubt">
+    <div class="two">
+      <div class="sec-head" style="margin:0">
+        <div class="eyebrow">Ask your doubt</div>
+        <h2>Stuck on something? Ask us.</h2>
+        <p>Type your question and tap send. WhatsApp opens with your question ready, and we reply with a clear explanation as soon as we can.</p>
+      </div>
+      <form class="panel" id="doubtForm">
+        <label class="f" for="dLevel">I am in
+          <select id="dLevel"><option>Class 6-8</option><option>Class 9-10</option><option>Class 11-12</option><option>College</option><option>Teacher</option><option>Other</option></select>
+        </label>
+        <label class="f" for="dSubject">Subject
+          <select id="dSubject"><option>Maths</option><option>Science</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option><option>Social Science</option><option>Computer</option><option>Exam stress or study habits</option><option>Other</option></select>
+        </label>
+        <label class="f" for="dText">Your question
+          <textarea id="dText" required placeholder="Example: Why do we change the sign when we move a term to the other side of an equation?"></textarea>
+        </label>
+        <button class="btn" type="submit">Send doubt on WhatsApp</button>
+        <p class="fine">Please send only your question. Don't include your address, school name or other private details.</p>
+      </form>
+    </div>
+  </section>
 
   <section id="who">
     <div class="sec-head">
@@ -704,6 +728,16 @@ footer strong { color: var(--ink); }
     try { await sample(prompt, { onText: function (t) { out.textContent = t.text; }, cache: false, modelTier: "quick" }); }
     catch (err) { out.textContent = err && err.code === "rate_limited" ? "Too many questions in a short time. Wait a minute and try again." : (err && err.text) || "Could not get an answer right now. Please try again."; }
     btn.disabled = false;
+  });
+
+  /* Ask your doubt: opens WhatsApp with the question ready to send */
+  $("doubtForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var q = $("dText").value.trim(); if (!q) return;
+    var msg = "StudyBridge doubt\nLevel: " + $("dLevel").value + "\nSubject: " + $("dSubject").value + "\nQuestion: " + q;
+    var url = "https://wa.me/" + String(CONTACT.whatsapp).replace(/\D/g, "") + "?text=" + encodeURIComponent(msg);
+    var w = null; try { w = window.open(url, "_blank"); } catch (err) {}
+    if (!w) window.location.href = url;
   });
 
   /* ---------- connect ---------- */
