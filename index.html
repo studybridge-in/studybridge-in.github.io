@@ -201,6 +201,11 @@ footer strong { color: var(--ink); }
 .plan .price small { font-family: var(--font-body); font-size: 15px; font-weight: 500; color: var(--muted); }
 .plan ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--muted); }
 .plan .btn { margin-top: 6px; width: 100%; }
+.plan a.btn { text-decoration: none; margin-top: 6px; width: 100%; }
+.paybox { margin-top: 20px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 18px 20px; display: grid; gap: 10px; background: var(--paper); }
+.paybox ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.paybox .upiid { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; word-break: break-all; }
+.paybox .muted { margin: 0; color: var(--muted); font-size: 14px; }
 .badge { position: absolute; top: -12px; left: 18px; background: var(--btn-bg); color: var(--btn-fg); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
 .badge.alt { background: var(--teal); color: #fff; }
 .voices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
@@ -413,7 +418,7 @@ footer strong { color: var(--ink); }
           <li>Weekly study plan and revision list</li>
           <li>Stress check-ins before exams</li>
         </ul>
-        <button class="btn" type="button" data-go="contact">Get started</button>
+        <a class="btn" href="upi://pay?pa=7894464108-2@ybl&amp;pn=DEBO%20PRASAD%20LIMA&amp;am=50&amp;cu=INR&amp;tn=StudyBridge%20Student%20plan" data-upi="50">Pay ₹50 by UPI</a>
       </div>
       <div class="plan">
         <span class="badge alt">For teachers</span>
@@ -424,8 +429,18 @@ footer strong { color: var(--ink); }
           <li>Class report: where students are stuck</li>
           <li>One monthly demo session</li>
         </ul>
-        <button class="btn ghost" type="button" data-go="contact">Get started</button>
+        <a class="btn ghost" href="upi://pay?pa=7894464108-2@ybl&amp;pn=DEBO%20PRASAD%20LIMA&amp;am=100&amp;cu=INR&amp;tn=StudyBridge%20Teacher%20plan" data-upi="100">Pay ₹100 by UPI</a>
       </div>
+    </div>
+    <div class="paybox">
+      <h3>How to pay</h3>
+      <ol>
+        <li>Tap a Pay button on a phone, or pay to the UPI ID below in PhonePe, Google Pay or Paytm.</li>
+        <li>Send the payment screenshot on WhatsApp so we can start your sessions.</li>
+        <li>Students under 18: please ask a parent or guardian to pay.</li>
+      </ol>
+      <p class="upiid">UPI ID: <strong id="upiId">7894464108-2@ybl</strong> <button class="btn ghost small" type="button" id="copyUpi">Copy</button></p>
+      <p class="muted">Payee name shown in your app: DEBO PRASAD LIMA. If a Pay button does not open your app, pay to the UPI ID above. Check the name and amount before you pay. We never ask for your UPI PIN or OTP.</p>
     </div>
   </section>
 
@@ -783,6 +798,15 @@ footer strong { color: var(--ink); }
       if (location.hash === "#crm") showCrm();
     }
   })();
+})();
+
+(function(){
+  var b=document.getElementById("copyUpi"); if(!b) return;
+  b.addEventListener("click",function(){
+    var t=document.getElementById("upiId").textContent;
+    try{ navigator.clipboard.writeText(t).then(function(){ b.textContent="Copied"; setTimeout(function(){ b.textContent="Copy"; },1800); }, function(){ b.textContent="Select and copy"; }); }
+    catch(e){ b.textContent="Select and copy"; }
+  });
 })();
 </script>
 
