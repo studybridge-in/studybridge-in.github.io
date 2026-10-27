@@ -202,6 +202,10 @@ footer strong { color: var(--ink); }
 .plan ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--muted); }
 .plan .btn { margin-top: 6px; width: 100%; }
 .plan a.btn { text-decoration: none; margin-top: 6px; width: 100%; }
+.cta-row a.btn, .aibox a.btn { text-decoration: none; }
+.aibox { display: grid; gap: 10px; align-content: start; }
+.aibox h3 { margin: 0; }
+.aibox p { margin: 0; }
 .paybox { margin-top: 20px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 18px 20px; display: grid; gap: 10px; background: var(--paper); }
 .paybox ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
 .paybox .upiid { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; word-break: break-all; }
@@ -299,6 +303,7 @@ footer strong { color: var(--ink); }
       <p class="lead">StudyBridge explains hard topics step by step and helps you stay calm before exams. It also helps teachers prepare faster and see where the class is stuck.</p>
       <div class="cta-row">
         <button class="btn" type="button" data-go="doubt">Ask your doubt</button>
+        <a class="btn ghost" href="https://ai.studio/apps/61d0a164-df8d-48e7-9823-c1cdd03f5dc8" target="_blank" rel="noopener">Ask the AI tutor</a>
         <button class="btn ghost" type="button" data-go="contact">Book a free session</button>
       </div>
     </div>
@@ -324,6 +329,12 @@ footer strong { color: var(--ink); }
         <div class="eyebrow">Ask your doubt</div>
         <h2>Stuck on something? Ask us.</h2>
         <p>Type your question and tap send. WhatsApp opens with your question ready, and we reply with a clear explanation as soon as we can.</p>
+        <div class="panel aibox" style="margin-top:20px">
+        <h3>Need an answer right now?</h3>
+        <p>Try our AI tutor. It explains step by step and gives a practice question. You may need to sign in with a Google account.</p>
+        <a class="btn" href="https://ai.studio/apps/61d0a164-df8d-48e7-9823-c1cdd03f5dc8" target="_blank" rel="noopener">Ask the AI tutor</a>
+        <p class="fine">AI can make mistakes. Check important facts with your teacher. It is not a counsellor or doctor. Please don't share personal details. If you feel very low or unsafe, talk to a trusted adult or call Tele-MANAS at 14416.</p>
+        </div>
       </div>
       <form class="panel" id="doubtForm">
         <label class="f" for="dLevel">I am in
