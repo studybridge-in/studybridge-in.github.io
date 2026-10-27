@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teacher page | StudyBridge</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Your StudyBridge teacher page: teaching aids and tools.">
+<meta name="theme-color" content="#2748D9">
+<style>
+  :root { --ink:#1b1f2a; --muted:#566073; --paper:#ffffff; --bg:#f6f7fb; --line:#d9dde8; --brand:#2748D9; --brand-ink:#ffffff; --ok:#1f7a4d; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#eef0f6; --muted:#a9b1c3; --paper:#171a24; --bg:#0f1117; --line:#2a2f3d; --brand:#8ea4ff; --brand-ink:#0f1117; --ok:#6fd0a0; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height:1.6; font-size:17px; }
+  header.top { background:var(--paper); border-bottom:1px solid var(--line); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  .bar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0; flex-wrap:wrap; }
+  .brand { font-weight:700; font-size:19px; text-decoration:none; color:var(--ink); }
+  nav { display:flex; gap:14px; overflow-x:auto; white-space:nowrap; font-size:15px; }
+  nav a { color:var(--brand); text-decoration:none; padding:6px 0; }
+  main { padding: 22px 0 56px; display:grid; gap:18px; }
+  section { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:20px 18px; min-width:0; }
+  h1 { font-size:28px; line-height:1.2; margin:0 0 8px; }
+  h2 { font-size:21px; margin:0 0 8px; }
+  h3 { font-size:17px; margin:14px 0 6px; }
+  p { margin:0 0 10px; } ul, ol { margin:0 0 10px; padding-left:22px; } li { margin-bottom:4px; }
+  a { color:var(--brand); }
+  .muted { color:var(--muted); font-size:15px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; background:var(--brand); color:var(--brand-ink); border:2px solid var(--brand); border-radius:8px; padding:10px 16px; font-weight:600; font-size:16px; cursor:pointer; min-height:44px; text-decoration:none; font-family:inherit; }
+  .btn.ghost { background:transparent; color:var(--ink); border-color:var(--ink); }
+  .btn.small { min-height:36px; padding:6px 12px; font-size:14px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  .grid2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; }
+  .card { border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .alert { border-left:4px solid var(--brand); padding:10px 14px; background:color-mix(in srgb, var(--brand) 8%, transparent); border-radius:6px; }
+  input, select, textarea { font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:8px 10px; width:100%; min-height:42px; }
+  textarea { min-height:110px; }
+  label { display:grid; gap:4px; font-size:15px; font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th, td { border:1px solid var(--line); padding:8px; text-align:left; vertical-align:top; }
+  .pre { white-space:pre-wrap; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:12px; font-size:15px; }
+  .check { display:flex; gap:10px; align-items:flex-start; font-weight:400; font-size:16px; }
+  .check input { width:22px; min-height:22px; margin-top:3px; }
+  .lesson summary { cursor:pointer; font-weight:600; }
+  .lesson .tag { color:var(--muted); font-size:14px; font-weight:400; }
+  .pacer { display:grid; place-items:center; gap:10px; padding:10px 0; }
+  .circle { width:120px; height:120px; border-radius:50%; background:color-mix(in srgb, var(--brand) 25%, transparent); border:3px solid var(--brand); transform:scale(.6); }
+  .circle.in { transform:scale(1); transition:transform 4s ease-in-out; }
+  .circle.out { transform:scale(.6); transition:transform 6s ease-in-out; }
+  @media (prefers-reduced-motion: reduce) { .circle.in, .circle.out { transition:none; } }
+  footer { padding:18px 0 40px; color:var(--muted); font-size:14px; }
+  @media (max-width: 560px) { h1 { font-size:24px; } section { padding:16px 14px; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><div class="bar">
+  <a class="brand" href="/">StudyBridge</a>
+  <nav aria-label="Sections"><a href="#live">Live sessions</a><a href="#help">Ask</a><a href="#plan">Lesson plan</a><a href="#prompts">AI prompts</a><a href="#tracker">Class tracker</a><a href="#blueprint">Paper blueprint</a><a href="#tips">Quick checks</a></nav>
+</div></div></header>
+<div class="wrap"><main>
+
+<section>
+  <h1>Welcome, teacher</h1>
+  <p>This is your StudyBridge page for teaching aids and tools. Keep this link private and do not share it.</p>
+  <div class="alert"><p><strong>How your plan works:</strong> message us on WhatsApp for lesson and practice-question help. Live sessions are on Sundays and holidays. Please do not share student names or personal details with us or with AI tools.</p></div>
+</section>
+
+<section id="live">
+  <h2>Live sessions</h2>
+  <p>Live sessions are held on <strong>Sundays and on holidays</strong>, so there is time to prepare properly. Dates and times are announced on the WhatsApp channel and shown here.</p>
+  <div id="sessList"><p class="muted">The next live session will be announced soon.</p></div>
+  <div class="row"><a class="btn ghost small" href="https://whatsapp.com/channel/0029Vb9XIsk4yltTioA6AE2p" target="_blank" rel="noopener">Open the channel</a></div>
+</section>
+
+<section id="help">
+  <h2>Ask for teaching help</h2>
+  <div class="grid2">
+    <label>Class<select id="tClass"><option>Class 6-8</option><option>Class 9-10</option><option>Class 11-12</option><option>College</option></select></label>
+    <label>Subject<input type="text" id="tSub" maxlength="40" placeholder="Example: Science"></label>
+  </div>
+  <label style="margin-top:10px">What do you need?<textarea id="tQ" placeholder="Example: Practice questions on Newton's laws for Class 9, easy to hard"></textarea></label>
+  <div class="row" style="margin-top:10px">
+    <button class="btn" type="button" id="tSend">Send on WhatsApp</button>
+    <a class="btn ghost" href="https://ai.studio/apps/61d0a164-df8d-48e7-9823-c1cdd03f5dc8" target="_blank" rel="noopener">Open the AI tutor</a>
+  </div>
+</section>
+
+<section id="plan">
+  <h2>Lesson plan template</h2>
+  <p class="muted">Copy this, then fill it in for your next class.</p>
+  <div id="lpText" class="pre">Topic:
+Class and time:
+Learning goal (students will be able to...):
+Prior knowledge to check (2 quick questions):
+1) Hook (2 min): a question or real example
+2) Explain (10 min): 2 clear steps with one worked example
+3) Try it together (8 min): one similar problem, students show answers
+4) Practice alone (10 min): 3 questions, easy to hard
+5) Check understanding (5 min): exit question on a slip of paper
+Common mistakes to watch for:
+Homework or follow-up:
+Notes after class (what worked, what to change):</div>
+  <div class="row" style="margin-top:10px"><button class="btn small" type="button" data-copy="lpText">Copy template</button></div>
+</section>
+
+<section id="prompts">
+  <h2>Prompt starters for AI tools</h2>
+  <p class="muted">Use these with the AI tutor or any AI tool. Replace the words in [brackets]. Always check the output yourself before using it with students, and never paste student names or private details.</p>
+  <div class="card"><div id="p1" class="pre">Create 10 practice questions on [topic] for [class], from easy to hard. Give the answers and a one-line method for each. Syllabus board: [board].</div><button class="btn ghost small" type="button" data-copy="p1" style="margin-top:8px">Copy</button></div>
+  <div class="card" style="margin-top:10px"><div id="p2" class="pre">Explain [topic] to a [class] student in simple English using one everyday example. Then list 3 common mistakes students make and how to correct each.</div><button class="btn ghost small" type="button" data-copy="p2" style="margin-top:8px">Copy</button></div>
+  <div class="card" style="margin-top:10px"><div id="p3" class="pre">Write a 5-question quick quiz on [topic] with 4 options each. Mark the correct answer and give a short reason why each wrong option is tempting.</div><button class="btn ghost small" type="button" data-copy="p3" style="margin-top:8px">Copy</button></div>
+  <div class="card" style="margin-top:10px"><div id="p4" class="pre">Make a 40-minute lesson plan on [topic] for [class] with a hook, explanation, guided practice, independent practice and an exit question.</div><button class="btn ghost small" type="button" data-copy="p4" style="margin-top:8px">Copy</button></div>
+</section>
+
+<section id="tracker">
+  <h2>Where is my class stuck?</h2>
+  <p class="muted">After a test or worksheet, enter each question's topic, how many students attempted it and how many got it wrong. The tool ranks topics by mistake rate. Nothing is saved or sent anywhere. Do not enter student names.</p>
+  <div class="grid2">
+    <label>Topic or question<input type="text" id="trTopic" maxlength="60" placeholder="Example: Q3 Factorising"></label>
+    <label>Students attempted<input type="number" id="trAtt" min="1" inputmode="numeric"></label>
+    <label>Got it wrong<input type="number" id="trWrong" min="0" inputmode="numeric"></label>
+  </div>
+  <div class="row" style="margin-top:10px"><button class="btn" type="button" id="trAdd">Add</button><button class="btn ghost small" type="button" id="trClear">Clear all</button></div>
+  <div style="overflow-x:auto;margin-top:12px"><table><thead><tr><th>Topic</th><th>Attempted</th><th>Wrong</th><th>Mistake rate</th></tr></thead><tbody id="trBody"><tr><td colspan="4" class="muted">No entries yet.</td></tr></tbody></table></div>
+  <div class="row" style="margin-top:10px"><button class="btn small" type="button" id="trCopy">Copy summary</button></div>
+  <p id="trNote" class="muted"></p>
+</section>
+
+<section id="blueprint">
+  <h2>Question paper blueprint</h2>
+  <p class="muted">A balanced mix to start from. Adjust for your board and marks.</p>
+  <div style="overflow-x:auto"><table>
+    <thead><tr><th>Type</th><th>Share of marks</th><th>What it checks</th></tr></thead>
+    <tbody>
+      <tr><td>Recall and basics</td><td>About 30%</td><td>Definitions, formulas, simple facts</td></tr>
+      <tr><td>Understanding</td><td>About 30%</td><td>Explaining in own words, simple applications</td></tr>
+      <tr><td>Application</td><td>About 25%</td><td>Using a method in a new situation</td></tr>
+      <tr><td>Higher thinking</td><td>About 15%</td><td>Analysis, reasoning, multi-step problems</td></tr>
+    </tbody></table></div>
+  <p class="muted" style="margin-top:8px">Tip: order questions from easy to hard so students start with confidence.</p>
+</section>
+
+<section id="tips">
+  <h2>Quick checks for understanding</h2>
+  <div class="grid2">
+    <div class="card"><h3>Exit ticket</h3><p>In the last 3 minutes, students write the answer to one question on a slip. Sort the slips into got it, nearly, not yet.</p></div>
+    <div class="card"><h3>Hinge question</h3><p>Ask one multiple-choice question where each wrong option shows a common mistake. Students show A, B, C or D. Their answers tell you who to help.</p></div>
+    <div class="card"><h3>Think, pair, share</h3><p>Students think alone for 1 minute, discuss with a partner for 2 minutes, then share. More students speak and mistakes surface early.</p></div>
+    <div class="card"><h3>Wait time</h3><p>After you ask a question, wait 5 seconds before choosing someone. Answers become longer and more students try.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>If you feel unsafe or hopeless, please talk to someone now.</strong> In India, Tele-MANAS offers free, 24x7 support on 14416.</p>
+  <p>StudyBridge gives study guidance and is not a substitute for a teacher, counsellor or doctor. AI can make mistakes, so check important facts with your teacher. Please don't share personal details. <a href="privacy.html">Privacy Policy and Terms</a></p>
+</footer>
+</main></div>
+<script>
+var WA = "918688461707";
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function loadJson(name, fb){ return fetch(name,{cache:"no-store"}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).catch(function(){ return fb; }); }
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+function copyText(t, btn){
+  var ok=function(){ var o=btn.textContent; btn.textContent="Copied"; setTimeout(function(){ btn.textContent=o; },1600); };
+  try{ navigator.clipboard.writeText(t).then(ok, function(){ btn.textContent="Select and copy"; }); }catch(e){ btn.textContent="Select and copy"; }
+}
+document.addEventListener("click", function(e){
+  var b=e.target.closest("[data-copy]"); if(!b) return;
+  var src=$(b.getAttribute("data-copy")); if(src) copyText(src.value!==undefined&&src.tagName!=="DIV"?src.value:src.textContent, b);
+});
+loadJson("sessions.json", {list:[]}).then(function(d){
+  var list=(d&&d.list)||[]; var box=$("sessList"); if(!box||!list.length) return;
+  box.innerHTML="<ul>"+list.map(function(s){
+    return "<li><strong>"+esc(s.title||"Live session")+"</strong> &middot; "+esc(s.date||"")+(s.time?" at "+esc(s.time):"")+(s.for?" &middot; for "+esc(s.for):"")+(s.link?' &middot; <a href="'+esc(s.link)+'" target="_blank" rel="noopener">Join</a>':"")+"</li>";
+  }).join("")+"</ul>";
+});
+
+$("tSend").addEventListener("click", function(){
+  var q=$("tQ").value.trim(); if(!q){ $("tQ").focus(); return; }
+  var m="StudyBridge teacher request (member)\nClass: "+$("tClass").value+"\nSubject: "+($("tSub").value||"-")+"\nRequest: "+q;
+  window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(m),"_blank");
+});
+var rows=[];
+function renderTracker(){
+  var body=$("trBody");
+  if(!rows.length){ body.innerHTML='<tr><td colspan="4" class="muted">No entries yet.</td></tr>'; $("trNote").textContent=""; return; }
+  var sorted=rows.slice().sort(function(a,b){ return b.rate-a.rate; });
+  body.innerHTML=sorted.map(function(r){ return "<tr><td>"+esc(r.topic)+"</td><td>"+r.att+"</td><td>"+r.wrong+"</td><td><strong>"+r.rate+"%</strong></td></tr>"; }).join("");
+  var top=sorted[0];
+  $("trNote").textContent="Reteach first: "+top.topic+" ("+top.rate+"% made mistakes).";
+}
+$("trAdd").addEventListener("click", function(){
+  var t=$("trTopic").value.trim(), a=parseInt($("trAtt").value,10), w=parseInt($("trWrong").value,10);
+  if(!t||!(a>0)||isNaN(w)||w<0||w>a){ $("trNote").textContent="Enter a topic, students attempted, and wrong (not more than attempted)."; return; }
+  rows.push({topic:t,att:a,wrong:w,rate:Math.round(w*100/a)});
+  $("trTopic").value=""; $("trAtt").value=""; $("trWrong").value="";
+  renderTracker();
+});
+$("trClear").addEventListener("click", function(){ rows=[]; renderTracker(); });
+$("trCopy").addEventListener("click", function(){
+  if(!rows.length) return;
+  var s=rows.slice().sort(function(a,b){ return b.rate-a.rate; }).map(function(r){ return r.topic+": "+r.wrong+"/"+r.att+" wrong ("+r.rate+"%)"; }).join("\n");
+  copyText("Class report - where students are stuck\n"+s, $("trCopy"));
+});
+
+</script>
+</body>
+</html>
