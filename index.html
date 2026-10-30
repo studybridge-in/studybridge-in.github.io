@@ -399,6 +399,7 @@ footer strong { color: var(--ink); }
       <div class="eyebrow">Learn</div>
       <h2>Short lessons you can use today</h2>
       <p>Tap a lesson to open it. New lessons are added often, so check back.</p>
+      <p><a class="btn ghost small" href="https://www.youtube.com/@StudyBridgeIndia" target="_blank" rel="noopener">Watch our videos on YouTube</a></p>
     </div>
     <div class="lessons" id="lessonList"></div>
   </section>
@@ -530,7 +531,7 @@ footer strong { color: var(--ink); }
   <footer>
     <p><strong>If you feel unsafe or hopeless,</strong> please talk to someone now. In India, Tele-MANAS offers free, 24x7 support on 14416.</p>
     <p>StudyBridge gives study guidance and is not a substitute for a teacher, counsellor or doctor.</p>
-    <p>&copy; 2026 StudyBridge. All rights reserved. <a href="privacy.html">Privacy Policy and Terms</a></p>
+    <p>&copy; 2026 StudyBridge. All rights reserved. <a href="https://www.youtube.com/@StudyBridgeIndia" target="_blank" rel="noopener">YouTube</a> &middot; <a href="privacy.html">Privacy Policy and Terms</a></p>
   </footer>
 </div>
 
@@ -626,6 +627,7 @@ footer strong { color: var(--ink); }
     if (CONTACT.email) out.push("Email: " + esc(CONTACT.email));
     if (CONTACT.city) out.push(esc(CONTACT.city));
     if (CONTACT.channel) out.push('Free tips and notices: <a href="' + esc(CONTACT.channel) + '" target="_blank" rel="noopener">Follow StudyBridge on WhatsApp</a>');
+    out.push('Videos: <a href="https://www.youtube.com/@StudyBridgeIndia" target="_blank" rel="noopener">StudyBridge on YouTube</a>');
     $("contactLines").innerHTML = out.join("<br>");
   }
   function renderNotices(list) {
