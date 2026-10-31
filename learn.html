@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Free lessons, quizzes and flashcards for 12 subjects, with a daily fact and a focus timer. By StudyBridge.">
+<link rel="canonical" href="https://studybridge-in.github.io/learn.html">
+<title>StudyBridge Learn</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600;700&display=swap">
+<style>
+html{color-scheme:light}body{margin:0}
+
+/* Layout: one narrow column like a phone app. Home with subject grid, quiz, flashcards and focus timer behind a bottom tab bar. */
+:root{
+  --bg:#F2F5FB; --surface:#FFFFFF; --ink:#14213D; --muted:#56637F; --line:#DAE2F1;
+  --brand:#3F5EF0; --brand-ink:#FFFFFF; --warm:#FF9A2B; --warm-soft:#FFF0DC;
+  --good:#17895D; --good-bg:#DDF5EA; --bad:#C93A32; --bad-bg:#FCE4E2;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1630; --surface:#17224A; --ink:#EAF0FF; --muted:#9DABCF; --line:#2B3A6B;
+  --brand:#8399FF; --brand-ink:#0E1630; --warm:#FFB04D; --warm-soft:#3A2B1A;
+  --good:#4FD6A0; --good-bg:#12392F; --bad:#FF8A82; --bad-bg:#47222A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1630; --surface:#17224A; --ink:#EAF0FF; --muted:#9DABCF; --line:#2B3A6B;
+  --brand:#8399FF; --brand-ink:#0E1630; --warm:#FFB04D; --warm-soft:#3A2B1A;
+  --good:#4FD6A0; --good-bg:#12392F; --bad:#FF8A82; --bad-bg:#47222A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-block:0 96px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:560px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px 8px}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:17px;white-space:nowrap;min-width:0}
+.logo i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--brand);color:var(--brand-ink);font-style:normal;font-size:14px}
+.streak{font-weight:700;font-size:13px;background:var(--warm-soft);color:var(--ink);padding:6px 12px;border-radius:99px;white-space:nowrap}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:30px;font-weight:800}
+h2{font-size:22px;font-weight:800}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+.sub{color:var(--muted);font-size:15px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.fact{background:var(--brand);color:var(--brand-ink);border:0}
+.fact .k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.85}
+.fact .q{font-family:var(--display);font-size:22px;font-weight:800;margin-top:6px}
+.fact .a{margin-top:4px;font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;color:var(--ink);font:inherit;cursor:pointer;min-height:112px}
+.tile:hover{border-color:var(--brand)}
+.badge{display:grid;place-items:center;min-width:42px;height:42px;padding:0 8px;border-radius:12px;font-family:var(--display);font-weight:800;font-size:16px;color:#fff;background:hsl(var(--h) 62% 46%)}
+.tile b{font-size:16px;line-height:1.2}
+.tile small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:700;font-size:16px;background:var(--brand);color:var(--brand-ink);min-height:48px}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.warm{background:var(--warm);color:#1b1305}
+.btn.full{width:100%}
+.btn:focus-visible,.tile:focus-visible,.opt:focus-visible,.tab:focus-visible,.chip:focus-visible{outline:3px solid var(--warm);outline-offset:2px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.back{background:none;border:0;color:var(--brand);font-weight:700;padding:8px 0}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:99px;transition:width .3s}
+.qtext{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:block;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-size:16px;min-height:52px}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt.right{background:var(--good-bg);border-color:var(--good)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.why{border-radius:14px;padding:14px 16px;font-size:15px}
+.why.ok{background:var(--good-bg)} .why.no{background:var(--bad-bg)}
+.why b{display:block;margin-bottom:2px}
+.score{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.flip{perspective:900px}
+.fc{width:100%;min-height:230px;border-radius:20px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.fc .side{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.fc .big{font-family:var(--display);font-size:26px;font-weight:800;line-height:1.25}
+.fc.ans{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.fc.ans .side{color:var(--brand-ink);opacity:.85}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:8px 14px;font-weight:600;font-size:14px}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.timer{font-family:var(--display);font-weight:800;font-size:76px;font-variant-numeric:tabular-nums;text-align:center;line-height:1}
+.ring{width:min(260px,72vw);aspect-ratio:1;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:conic-gradient(var(--brand) var(--p,0%),var(--line) 0)}
+.ring>div{width:84%;aspect-ratio:1;border-radius:50%;background:var(--bg);display:grid;place-items:center;gap:0}
+.ring small{display:block;text-align:center;color:var(--muted);font-weight:600;margin-top:6px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:5}
+nav .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.tab{border:0;background:none;color:var(--muted);font-weight:700;font-size:12.5px;padding:10px 4px;border-radius:12px;min-height:46px}
+.tab.on{background:var(--ink);color:var(--bg)}
+textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:12px;resize:vertical;min-height:84px}
+textarea:focus-visible{outline:3px solid var(--warm);outline-offset:1px}
+.trow{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;color:var(--ink);font:inherit;min-height:56px}
+.trow:hover{border-color:var(--brand)}
+.trow span{font-weight:700}
+.trow em{font-style:normal;color:var(--brand);font-weight:700}
+.para{font-size:17px;line-height:1.6;max-width:65ch}
+.kp{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.kp li{position:relative;padding-left:22px}
+.kp li::before{content:"";position:absolute;left:4px;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--warm)}
+details.qa{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0}
+details.qa summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary::after{content:"+";color:var(--brand);font-size:22px;line-height:1}
+details.qa[open] summary::after{content:"−"}
+details.qa .a{padding:0 16px 14px;color:var(--ink)}
+details.qa summary:focus-visible{outline:3px solid var(--warm);outline-offset:2px;border-radius:14px}
+.aiout{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.55}
+a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.note{font-size:13px;color:var(--muted)}
+footer{margin-top:28px;padding-bottom:8px;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:6px}
+footer a{color:var(--brand);font-weight:600}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><i>SB</i><span>StudyBridge Learn</span></div>
+    <div class="streak" id="streak"></div>
+  </header>
+  <main id="app" class="stack"></main>
+  <footer>
+    <p>Free to use. Made by StudyBridge for students, teachers and everyone who likes to learn.</p>
+    <p><a href="https://studybridge-in.github.io" target="_blank" rel="noopener">studybridge-in.github.io</a> · <a href="https://www.youtube.com/@StudyBridgeIndia" target="_blank" rel="noopener">YouTube</a></p>
+    <p>If you feel very low or unsafe, please talk to a trusted adult. In India, Tele-MANAS (14416) is a free helpline.</p>
+  </footer>
+</div>
+<nav><div class="in" id="nav"></div></nav>
+
+<script>
+// ---------- data ----------
+var SUBJ=[
+ {id:"maths",n:"Maths",te:"గణితం",h:226,s:"π"},
+ {id:"physics",n:"Physics",te:"భౌతిక శాస్త్రం",h:262,s:"Ω"},
+ {id:"chem",n:"Chemistry",te:"రసాయన శాస్త్రం",h:172,s:"Fe"},
+ {id:"bio",n:"Biology",te:"జీవశాస్త్రం",h:140,s:"DNA"},
+ {id:"eng",n:"English",te:"ఇంగ్లీష్",h:12,s:"Aa"},
+ {id:"hist",n:"History",te:"చరిత్ర",h:28,s:"AD"},
+ {id:"civ",n:"Civics",te:"పౌరశాస్త్రం",h:200,s:"§"},
+ {id:"geo",n:"Geography",te:"భూగోళశాస్త్రం",h:100,s:"N↑"},
+ {id:"eco",n:"Economics",te:"ఆర్థికశాస్త్రం",h:48,s:"₹"},
+ {id:"comp",n:"Computer",te:"కంప్యూటర్",h:215,s:"{ }"},
+ {id:"gk",n:"General Knowledge",te:"సాధారణ జ్ఞానం",h:330,s:"?"},
+ {id:"life",n:"Study Skills",te:"జీవన నైపుణ్యాలు",h:300,s:"25"}
+];
+// question: [text, "A|B|C|D", index of right answer, explanation]
+var Q={
+maths:[
+["What is 12 × 12?","124|132|144|148",2,"12 × 12 = 144."],
+["What is the sum of the angles in a triangle?","90°|180°|270°|360°",1,"The three angles of any triangle add up to 180°."],
+["What is the square root of 169?","11|12|13|14",2,"13 × 13 = 169."],
+["Which of these is a prime number?","21|27|29|33",2,"29 can only be divided by 1 and itself."],
+["What is 15% of 200?","15|20|30|45",2,"15 ÷ 100 × 200 = 30."],
+["What is the perimeter of a square with side 7 cm?","14 cm|21 cm|28 cm|49 cm",2,"Perimeter = 4 × side = 4 × 7 = 28 cm."],
+["What is the LCM of 4 and 6?","10|12|18|24",1,"12 is the smallest number that both 4 and 6 divide exactly."],
+["What is 1/2 + 1/4?","2/6|1/6|3/4|1/8",2,"1/2 = 2/4, and 2/4 + 1/4 = 3/4."]],
+physics:[
+["What is the SI unit of force?","Joule|Newton|Watt|Pascal",1,"Force is measured in newtons (N). 1 N = 1 kg·m/s²."],
+["About how fast does light travel in vacuum?","3 × 10⁸ m/s|3 × 10⁶ m/s|300 m/s|3 × 10⁵ m/s",0,"Light travels at about 3 × 10⁸ metres per second."],
+["Which force pulls objects towards the Earth?","Friction|Magnetism|Gravity|Tension",2,"Gravity pulls everything towards the centre of the Earth."],
+["Ohm's law says V equals...","I + R|I × R|I ÷ R|R ÷ I",1,"V = I × R: voltage equals current times resistance."],
+["Sound cannot travel through...","Water|Air|Steel|A vacuum",3,"Sound needs a medium such as air, water or metal. Space is a vacuum."],
+["What is the unit of electric current?","Volt|Ampere|Ohm|Watt",1,"Current is measured in amperes (A)."],
+["A plane mirror forms an image by...","Refraction|Reflection|Absorption|Diffraction",1,"Mirrors bounce light back. This is reflection."],
+["Speed is equal to...","distance × time|distance ÷ time|time ÷ distance|mass ÷ time",1,"Speed = distance ÷ time."]],
+chem:[
+["What is the chemical formula of water?","H₂O|CO₂|O₂|NaCl",0,"Each water molecule has 2 hydrogen atoms and 1 oxygen atom."],
+["What is the chemical symbol for gold?","Go|Gd|Au|Ag",2,"Au comes from the Latin word aurum."],
+["What is the pH of pure water?","0|7|10|14",1,"Pure water is neutral, with a pH of 7."],
+["Which gas makes up most of Earth's air?","Oxygen|Carbon dioxide|Nitrogen|Hydrogen",2,"Air is about 78% nitrogen and 21% oxygen."],
+["Common salt is the compound...","NaCl|KCl|CaCO₃|NaOH",0,"Table salt is sodium chloride, NaCl."],
+["Which of these is a noble gas?","Oxygen|Neon|Nitrogen|Chlorine",1,"Neon is a noble gas. It hardly reacts with other elements."],
+["Lemon juice is...","Acidic|Basic|Neutral|Salty",0,"Lemons contain citric acid, so the juice is acidic."],
+["The atomic number of an atom tells us its number of...","Neutrons|Protons|Molecules|Bonds",1,"Atomic number = number of protons in the nucleus."]],
+bio:[
+["Which gas do plants take in for photosynthesis?","Oxygen|Carbon dioxide|Nitrogen|Hydrogen",1,"Plants use carbon dioxide, water and sunlight to make food."],
+["Which part is called the powerhouse of the cell?","Nucleus|Ribosome|Mitochondria|Vacuole",2,"Mitochondria release energy from food for the cell."],
+["How many bones does an adult human have?","106|206|306|406",1,"An adult has 206 bones. Babies have more, and some join as they grow."],
+["What is the largest organ of the human body?","Liver|Brain|Skin|Lungs",2,"Skin is the largest organ."],
+["Which vitamin does our skin make with sunlight?","A|C|D|K",2,"Sunlight helps our skin make vitamin D."],
+["What pumps blood around the body?","Lungs|Heart|Kidney|Liver",1,"The heart is a muscle that pumps blood."],
+["What is the green pigment in leaves called?","Chlorophyll|Haemoglobin|Melanin|Keratin",0,"Chlorophyll traps sunlight for photosynthesis."],
+["How many chambers does the human heart have?","2|3|4|5",2,"It has 4 chambers: 2 atria and 2 ventricles."]],
+eng:[
+["What is the plural of 'child'?","childs|childes|children|childrens",2,"Child has an irregular plural: children."],
+["Choose the correct sentence.","She go to school.|She goes to school.|She going to school.|She gone to school.",1,"With she, he or it, the verb in the simple present takes -s: goes."],
+["What is the opposite of 'brave'?","Bold|Cowardly|Strong|Wise",1,"Cowardly means not brave."],
+["'A piece of cake' means...","a dessert|something very easy|a small gift|a party",1,"This idiom means a task that is very easy."],
+["What is the past tense of 'run'?","runned|running|ran|runs",2,"Run is irregular: run, ran, run."],
+["Which word is an adjective?","Quickly|Beautiful|Run|Happiness",1,"An adjective describes a noun. Beautiful describes a thing."],
+["Fill in: ___ apple a day keeps the doctor away.","A|An|The|Some",1,"Use 'an' before a vowel sound."],
+["Which spelling is correct?","Neccessary|Necessary|Necesary|Necessery",1,"Necessary: one c, two s."]],
+hist:[
+["Who was the first Prime Minister of India?","Sardar Patel|Jawaharlal Nehru|Lal Bahadur Shastri|Indira Gandhi",1,"Jawaharlal Nehru became PM in 1947."],
+["In which year did India become independent?","1942|1945|1947|1950",2,"India became independent on 15 August 1947."],
+["Who is called the Father of the Nation in India?","Subhas Chandra Bose|Mahatma Gandhi|Bhagat Singh|B. R. Ambedkar",1,"Mahatma Gandhi led the non-violent freedom movement."],
+["Who built the Taj Mahal?","Akbar|Shah Jahan|Babur|Aurangzeb",1,"Shah Jahan built it in memory of his wife Mumtaz Mahal."],
+["The Dandi (Salt) March took place in...","1919|1930|1942|1857",1,"Gandhi led the Salt March in 1930."],
+["The Quit India Movement began in...","1930|1935|1942|1947",2,"It started in August 1942."],
+["Which emperor turned to Buddhism after the Kalinga war?","Chandragupta|Ashoka|Akbar|Harsha",1,"Ashoka gave up war and spread the message of peace."],
+["The great revolt against the East India Company began in...","1757|1857|1905|1919",1,"The Revolt of 1857 is also called the First War of Independence."]],
+civ:[
+["The Indian Constitution came into force on...","15 August 1947|26 January 1950|2 October 1950|26 November 1949",1,"It was adopted on 26 Nov 1949 and came into force on 26 Jan 1950."],
+["Who chaired the Drafting Committee of the Constitution?","Dr. B. R. Ambedkar|Dr. Rajendra Prasad|Sardar Patel|Jawaharlal Nehru",0,"Dr. B. R. Ambedkar chaired the Drafting Committee."],
+["Who was the first President of India?","S. Radhakrishnan|Rajendra Prasad|Zakir Husain|V. V. Giri",1,"Dr. Rajendra Prasad was the first President."],
+["What is the minimum voting age in India?","16|18|21|25",1,"Every citizen aged 18 or more can vote."],
+["How many houses does the Parliament of India have?","One|Two|Three|Four",1,"Lok Sabha and Rajya Sabha."],
+["Who leads the government in a state?","Chief Minister|Prime Minister|President|Chief Justice",0,"The Chief Minister heads the state government."],
+["The Right to Education is for children aged...","3 to 5|6 to 14|15 to 18|18 to 21",1,"Article 21A: free and compulsory education for ages 6 to 14."],
+["Who is the Supreme Commander of India's armed forces?","Prime Minister|Defence Minister|President|Chief Justice",2,"The President is the Supreme Commander."]],
+geo:[
+["What is the capital of India?","Mumbai|New Delhi|Kolkata|Chennai",1,"New Delhi is the capital."],
+["Which is the largest ocean?","Atlantic|Indian|Pacific|Arctic",2,"The Pacific Ocean covers about one third of the Earth."],
+["Which is the highest mountain peak in the world?","K2|Mount Everest|Kangchenjunga|Makalu",1,"Mount Everest, on the Nepal-Tibet border."],
+["Which river is called the Dakshina Ganga?","Krishna|Godavari|Kaveri|Narmada",1,"The Godavari, the longest river of South India."],
+["Which is the largest hot desert in the world?","Thar|Gobi|Sahara|Kalahari",2,"The Sahara in Africa."],
+["Which imaginary line divides the Earth into North and South halves?","Prime Meridian|Equator|Tropic of Cancer|Arctic Circle",1,"The Equator is at 0° latitude."],
+["Which is the largest Indian state by area?","Madhya Pradesh|Rajasthan|Maharashtra|Uttar Pradesh",1,"Rajasthan."],
+["What is the capital of Telangana?","Warangal|Hyderabad|Nizamabad|Karimnagar",1,"Hyderabad."]],
+eco:[
+["Extra money paid when you borrow is called...","Tax|Interest|Profit|Rent",1,"Interest is the price of borrowing money."],
+["What is the currency of India?","Dollar|Rupee|Yen|Taka",1,"The Indian rupee (₹)."],
+["If demand rises and supply stays the same, price usually...","falls|rises|stays zero|vanishes",1,"More buyers for the same goods push prices up."],
+["Money kept aside from income is called...","savings|debt|loss|tax",0,"Savings are the part of income you do not spend."],
+["Selling price higher than cost price gives...","loss|profit|discount|interest",1,"Profit = selling price − cost price."],
+["GDP stands for...","Gross Domestic Product|General Daily Price|Gross Dollar Payment|Grand Domestic Plan",0,"GDP measures the value of goods and services a country produces."],
+["Which of these is a primary sector activity?","Farming|Banking|Making cars|Teaching",0,"Primary sector means getting things from nature, such as farming and mining."],
+["Which bank manages India's money supply and issues rupee notes?","SBI|Reserve Bank of India|NABARD|LIC",1,"The Reserve Bank of India (RBI)."]],
+comp:[
+["What does CPU stand for?","Central Processing Unit|Computer Power Unit|Central Program Utility|Core Printing Unit",0,"The CPU is the brain of the computer."],
+["Which of these is an input device?","Monitor|Printer|Keyboard|Speaker",2,"A keyboard sends data into the computer."],
+["Computers use which two digits in binary?","1 and 2|0 and 1|0 and 9|1 and 10",1,"Binary uses only 0 and 1."],
+["What does Ctrl + C do?","Cut|Copy|Close|Clear",1,"Ctrl + C copies. Ctrl + V pastes."],
+["What does RAM stand for?","Random Access Memory|Ready Access Machine|Run All Memory|Read And Move",0,"RAM is the computer's short-term working memory."],
+["How many bits are in one byte?","4|8|16|32",1,"1 byte = 8 bits."],
+["Which language gives a web page its structure?","HTML|Python|SQL|Java",0,"HTML marks up headings, paragraphs, links and images."],
+["Which of these is a web browser?","Windows|Chrome|Excel|Linux",1,"Chrome is a browser. Windows and Linux are operating systems."]],
+gk:[
+["What is India's national animal?","Lion|Tiger|Elephant|Leopard",1,"The Bengal tiger."],
+["What is India's national bird?","Peacock|Parrot|Sparrow|Eagle",0,"The Indian peafowl."],
+["What is India's national flower?","Rose|Lotus|Jasmine|Marigold",1,"The lotus."],
+["Which is the largest mammal?","Elephant|Giraffe|Blue whale|Hippo",2,"The blue whale is the largest animal ever known."],
+["Which is the fastest land animal?","Lion|Horse|Cheetah|Antelope",2,"A cheetah can run about 100 km/h in short bursts."],
+["How many rings are in the Olympic symbol?","4|5|6|7",1,"Five rings for five regions of the world."],
+["How many colours are in a rainbow?","5|6|7|8",2,"Violet, indigo, blue, green, yellow, orange and red."],
+["How many days are in a leap year?","364|365|366|367",2,"A leap year has 366 days, with 29 February."]],
+life:[
+["In the 25 and 5 method, how long is one focus session?","5 minutes|25 minutes|2 hours|10 minutes",1,"Focus for 25 minutes, then rest for 5."],
+["Which is the best way to remember what you read?","Read it five times|Test yourself without looking|Highlight everything|Copy it neatly",1,"Testing yourself is called active recall. It works better than rereading."],
+["How much sleep do most teenagers need?","4 to 5 hours|6 hours|8 to 10 hours|12 to 14 hours",2,"Sleep helps your brain store what you learned."],
+["Before an exam, if you feel nervous, a helpful step is...","Skip sleep|Slow deep breaths|Compare with friends|Study all night",1,"Slow breathing calms the body."],
+["Revising a topic after 1 day, 3 days and 7 days is called...","Cramming|Spaced repetition|Skimming|Guessing",1,"Spacing out revision helps memory last longer."],
+["Which helps you focus while studying?","Phone on the desk|Phone in another room|Loud TV|Many tabs open",1,"Keep distractions out of sight."],
+["If you feel very low or unsafe, you should...","Hide it|Talk to a trusted adult or a helpline|Ignore it|Wait alone",1,"Talking helps. In India, Tele-MANAS 14416 is a free helpline."],
+["A good study plan has...","One plan a year|Small daily goals|Only weekend study|No breaks",1,"Small daily goals and short breaks keep you going."]]
+};
+// flashcards: [front, back]
+var C={
+maths:[["Area of a circle","π × r²"],["Circumference of a circle","2 × π × r"],["Pythagoras theorem","a² + b² = c² in a right-angled triangle"],["Area of a triangle","½ × base × height"],["Volume of a cube","side × side × side"],["Simple interest","(P × R × T) ÷ 100"],["Area of a rectangle","length × breadth"]],
+physics:[["Newton's first law","An object stays at rest or keeps moving steadily unless a force acts on it"],["Speed","distance ÷ time"],["Ohm's law","V = I × R"],["Unit of energy","Joule (J)"],["Unit of power","Watt (W)"],["Force","F = m × a"],["Speed of light","About 3 × 10⁸ m/s"]],
+chem:[["Na","Sodium"],["Fe","Iron"],["K","Potassium"],["Au and Ag","Gold and Silver"],["Acids turn blue litmus","Red"],["A pH below 7 means","Acidic"],["Carbon dioxide","CO₂"]],
+bio:[["Photosynthesis","Plants make food from CO₂, water and sunlight, and release oxygen"],["Universal blood donor","O negative"],["Control centre of the cell","Nucleus"],["Blood cells that fight germs","White blood cells"],["Chambers of the heart","2 atria and 2 ventricles"],["Lack of vitamin C causes","Scurvy"],["Organs that filter blood to make urine","Kidneys"]],
+eng:[["Noun","Names a person, place, thing or idea"],["Verb","Shows an action or a state"],["Adjective","Describes a noun"],["Adverb","Tells how, when or where something happens"],["Pronoun","Takes the place of a noun"],["Preposition","Shows position or relation: in, on, under"],["Conjunction","Joins words or sentences: and, but, because"]],
+hist:[["Year India became independent","1947"],["Author of 'The Discovery of India'","Jawaharlal Nehru"],["Mughal emperor who built the Red Fort","Shah Jahan"],["Year of the Dandi March","1930"],["Founder of the Maurya Empire","Chandragupta Maurya"],["Battle of Plassey","1757"]],
+civ:[["Highest court in India","The Supreme Court"],["Who appoints the Prime Minister?","The President"],["Voting age in India","18 years"],["Republic Day","26 January"],["National Voters' Day","25 January"],["Houses of Parliament","Lok Sabha and Rajya Sabha"]],
+geo:[["Seven continents","Asia, Africa, North America, South America, Antarctica, Europe, Australia"],["Largest continent","Asia"],["Smallest continent","Australia"],["States in India","28 states and 8 Union Territories"],["Longest river in India","The Ganga"],["Tropic of Cancer","Passes through 8 states of India"]],
+eco:[["Profit","Selling price − cost price"],["Loss","Cost price − selling price"],["Demand","How much people want to buy"],["Supply","How much sellers offer"],["Inflation","A general rise in prices over time"],["Tax","Money paid to the government for public services"]],
+comp:[["1 KB","1024 bytes"],["1 byte","8 bits"],["Operating system examples","Windows, Android, Linux"],["Input and output","Keyboard is input, monitor is output"],["URL","The web address of a page"],["Ctrl + Z","Undo"]],
+gk:[["National animal of India","Tiger"],["National bird of India","Peacock"],["National fruit of India","Mango"],["National flower of India","Lotus"],["Largest planet","Jupiter"],["Colours of the Indian flag","Saffron, white and green, with the Ashoka Chakra"],["Capital of Japan","Tokyo"]],
+life:[["Active recall","Test yourself without looking at your notes"],["Pomodoro","25 minutes of focus, then a 5 minute break"],["Spaced repetition","Revise after 1 day, 3 days and 7 days"],["Box breathing","Breathe in 4, hold 4, out 4, hold 4"],["Sleep for teenagers","8 to 10 hours"],["Feynman trick","Explain the topic in simple words, as if to a younger child"]]
+};
+
+// ---------- lessons: [{t:title, e:[explanation paragraphs], k:[key points], qa:[[question, answer]]}] ----------
+var L={
+maths:[
+{t:"Fractions and decimals",e:["A fraction shows a part of a whole. In 3/4, the bottom number (denominator) says how many equal parts the whole has, and the top number (numerator) says how many parts we take.","To add or subtract fractions with different denominators, first make the denominators equal using the LCM, then add the numerators. A decimal is another way to write a fraction. To change a fraction to a decimal, divide the top by the bottom."],k:["Equivalent fractions have the same value, like 1/2 = 2/4 = 4/8.","Make denominators equal before adding or subtracting.","In decimals, the places after the point are tenths, hundredths, thousandths.","To compare decimals, write them with the same number of digits."],qa:[["Add 2/3 + 3/4.","LCM of 3 and 4 is 12. 2/3 = 8/12 and 3/4 = 9/12. Sum = 17/12 = 1 5/12."],["Convert 3/8 to a decimal.","Divide 3 by 8. 3 ÷ 8 = 0.375."],["Which is bigger, 0.5 or 0.45?","Write 0.5 as 0.50. Since 0.50 is greater than 0.45, 0.5 is bigger."]]},
+{t:"Algebra basics",e:["Algebra uses letters like x and y to stand for numbers we do not know yet. An expression such as 2x + 3 has no equals sign. An equation such as 2x + 3 = 11 says two things are equal, and we solve it to find x.","The golden rule for solving equations: whatever you do to one side, do the same to the other side. This keeps the equation balanced like a weighing scale."],k:["Like terms (such as 2a and 3a) can be added: 2a + 3a = 5a.","To remove +5 from one side, subtract 5 from both sides.","(a + b)² = a² + 2ab + b².","Always check your answer by putting it back in the equation."],qa:[["Solve 3x + 5 = 20.","Subtract 5 from both sides: 3x = 15. Divide both sides by 3: x = 5. Check: 3 × 5 + 5 = 20."],["Expand (x + 3)².","(x + 3)² = x² + 2 × x × 3 + 3² = x² + 6x + 9."],["Simplify 2a + 3a − a.","2a + 3a − a = 4a."]]},
+{t:"Triangles and the Pythagoras theorem",e:["A triangle has three sides and three angles, and its angles always add up to 180°. In a right-angled triangle, one angle is 90°. The longest side, opposite the right angle, is the hypotenuse.","The Pythagoras theorem says: in a right-angled triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. That is, a² + b² = c²."],k:["Angle sum of a triangle = 180°.","Hypotenuse is the longest side of a right triangle.","a² + b² = c² works only for right-angled triangles.","If a² + b² = c² for three sides, the triangle is right-angled."],qa:[["The two shorter sides of a right triangle are 6 cm and 8 cm. Find the hypotenuse.","c² = 6² + 8² = 36 + 64 = 100, so c = 10 cm."],["Two angles of a triangle are 50° and 60°. Find the third angle.","180° − 50° − 60° = 70°."],["Is a triangle with sides 5, 12 and 13 right-angled?","5² + 12² = 25 + 144 = 169 = 13². Yes, it is right-angled."]]},
+{t:"Percentages, profit and loss",e:["Percent means 'out of 100'. 25% is 25/100 = 1/4. To find a percentage of a number, multiply the number by the percentage and divide by 100.","If the selling price (SP) is more than the cost price (CP), there is a profit. If it is less, there is a loss. Profit or loss percent is always calculated on the cost price."],k:["Profit = SP − CP and Loss = CP − SP.","Profit % = (Profit ÷ CP) × 100.","Discount is a reduction on the marked price.","To find the price after a d% discount, multiply by (100 − d)/100."],qa:[["A shirt bought for ₹200 is sold for ₹250. Find the profit percent.","Profit = 250 − 200 = ₹50. Profit % = 50/200 × 100 = 25%."],["Find 20% of 450.","20/100 × 450 = 90."],["A ₹500 item has a 10% discount. What is the new price?","Discount = 10% of 500 = ₹50. New price = 500 − 50 = ₹450."]]}],
+physics:[
+{t:"Motion, speed and acceleration",e:["An object is in motion if its position changes with time. Speed tells how fast it moves: speed = distance ÷ time. Velocity is speed in a given direction.","If velocity changes, the object accelerates. Acceleration = change in velocity ÷ time taken. Slowing down is also acceleration (called retardation)."],k:["Speed unit: m/s or km/h.","To change km/h into m/s, multiply by 5/18.","Acceleration unit: m/s².","Distance is how much path is covered. Displacement is the straight-line change in position."],qa:[["A car covers 150 km in 3 hours. Find its speed.","Speed = 150 ÷ 3 = 50 km/h."],["Convert 36 km/h to m/s.","36 × 5/18 = 10 m/s."],["A vehicle goes from 0 to 20 m/s in 4 s. Find its acceleration.","a = (20 − 0) ÷ 4 = 5 m/s²."]]},
+{t:"Force and Newton's laws",e:["A force is a push or a pull. It can change the speed, direction or shape of an object.","Newton's first law: an object stays at rest, or keeps moving at steady speed in a straight line, unless a force acts on it (inertia). Second law: force = mass × acceleration. Third law: for every action there is an equal and opposite reaction."],k:["Unit of force: newton (N).","Heavier objects have more inertia.","F = m × a.","Action and reaction act on different objects."],qa:[["A 5 kg object accelerates at 2 m/s². What force acts on it?","F = m × a = 5 × 2 = 10 N."],["Why do we wear seat belts in a car?","When the car stops suddenly, our body tends to keep moving forward because of inertia. The seat belt holds us back."],["Give an example of Newton's third law.","When you swim, you push the water backward and the water pushes you forward. A rocket pushes gas downward and the gas pushes the rocket upward."]]},
+{t:"Electricity and circuits",e:["Electric current is the flow of charge through a wire. Voltage is the push that makes charge flow, and resistance is how much the material opposes the flow.","Ohm's law links them: V = I × R. In a series circuit there is one path, so if one bulb fails, all go out. In a parallel circuit there are many paths, so each bulb works independently."],k:["Current unit: ampere (A). Voltage unit: volt (V). Resistance unit: ohm (Ω).","Metals are good conductors. Rubber and plastic are insulators.","Homes use parallel wiring.","Never touch electrical switches with wet hands."],qa:[["A 12 V battery is connected to a 4 Ω resistor. Find the current.","I = V ÷ R = 12 ÷ 4 = 3 A."],["Why are appliances in our homes connected in parallel?","Each appliance gets the full voltage and can be switched on or off independently."],["Which material is a good insulator: copper, rubber or iron?","Rubber."]]},
+{t:"Light: reflection and refraction",e:["Light travels in straight lines. When it hits a smooth surface like a mirror, it bounces back. This is reflection. The law of reflection: the angle of incidence equals the angle of reflection.","When light passes from one material into another, such as from air into water, it bends. This is refraction. It is why a pencil looks bent in a glass of water."],k:["Angle of incidence = angle of reflection.","Plane mirrors form virtual images of the same size.","Concave mirrors are used in torches, headlights and shaving mirrors.","Convex mirrors give a wide view, used as vehicle side mirrors."],qa:[["A ray hits a mirror at 30°. What is the angle of reflection?","30°, because the angles are equal."],["Why does a pencil look bent in water?","Light bends (refraction) when it moves from water to air, so the part inside the water seems to be in a different place."],["Which mirror is used as a vehicle's rear-view mirror?","A convex mirror, because it shows a wide area behind the vehicle."]]}],
+chem:[
+{t:"Atoms and elements",e:["Everything is made of tiny particles called atoms. An atom has a nucleus with protons (positive) and neutrons (no charge), and electrons (negative) move around it.","An element has only one kind of atom. The atomic number is the number of protons. The periodic table arranges elements by increasing atomic number, in rows (periods) and columns (groups)."],k:["Atomic number = number of protons.","In a neutral atom, protons = electrons.","Metals conduct heat and electricity and are shiny.","Non-metals are usually dull and poor conductors."],qa:[["Which element has atomic number 11?","Sodium (Na), because it has 11 protons."],["A neutral atom has 8 protons. How many electrons does it have?","8, because a neutral atom has equal protons and electrons. This is oxygen."],["Name one metal and one non-metal.","Metal: iron or copper. Non-metal: carbon, sulphur or oxygen."]]},
+{t:"Acids, bases and salts",e:["Acids taste sour and turn blue litmus red. Bases feel soapy and turn red litmus blue. The pH scale runs from 0 to 14: below 7 is acidic, 7 is neutral, above 7 is basic.","When an acid reacts with a base, they neutralise each other and form a salt and water. For example, HCl + NaOH → NaCl + H₂O. Never taste chemicals in a lab."],k:["Lemon, vinegar and tamarind contain acids.","Soap, baking soda and antacids are bases.","Neutralisation: acid + base → salt + water.","pH 7 is neutral, like pure water."],qa:[["Write the reaction of hydrochloric acid with sodium hydroxide.","HCl + NaOH → NaCl + H₂O (sodium chloride, common salt, and water)."],["Why do we take an antacid for acidity?","Antacids are bases. They neutralise the extra acid in the stomach."],["Is lemon juice acidic or basic?","Acidic, with a pH of about 2."]]},
+{t:"Chemical reactions and balancing",e:["In a chemical reaction, reactants change into new substances called products. Signs of a chemical change are a new colour, gas bubbles, heat or light, or a solid forming.","Mass is never lost or created in a reaction. So the number of atoms of each element must be the same on both sides. This is why we balance equations by putting numbers in front of formulas."],k:["Physical change: no new substance, such as melting ice.","Chemical change: new substance, such as burning paper or rusting iron.","Balance by changing the numbers in front, never the small numbers inside a formula.","Law of conservation of mass."],qa:[["Balance: H₂ + O₂ → H₂O.","2H₂ + O₂ → 2H₂O. Now there are 4 H and 2 O on both sides."],["Is rusting a physical or chemical change?","Chemical, because iron changes into a new substance, iron oxide."],["Give two signs that a chemical reaction has taken place.","Gas bubbles, a colour change, heat or light, or a solid appearing."]]}],
+bio:[
+{t:"The cell: the unit of life",e:["All living things are made of cells. Robert Hooke first saw cells in thin slices of cork in 1665. Some organisms, like amoeba, have just one cell. Others, like humans, have trillions.","Every cell has a cell membrane, cytoplasm and a nucleus that controls the cell. Plant cells also have a cell wall, chloroplasts and a large vacuole. Animal cells do not."],k:["Nucleus: control centre.","Mitochondria: release energy.","Chloroplast: makes food by photosynthesis (plants only).","Cell wall gives plant cells their fixed shape."],qa:[["Who first observed cells?","Robert Hooke, in 1665."],["Name two parts found in plant cells but not in animal cells.","Cell wall and chloroplasts (also a large central vacuole)."],["Which part of the cell controls its activities?","The nucleus."]]},
+{t:"Photosynthesis and respiration",e:["Plants make their own food by photosynthesis. In green leaves, chlorophyll traps sunlight, and the plant uses carbon dioxide and water to make glucose and release oxygen.","Respiration is how all living cells release energy from glucose. It happens day and night, in plants and animals. Photosynthesis stores energy, while respiration releases it."],k:["6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂.","Photosynthesis takes place in chloroplasts.","Respiration takes place in all living cells (mainly in mitochondria).","Plants take in CO₂ and give out O₂ in daylight."],qa:[["Write the word equation of photosynthesis.","Carbon dioxide + water, in sunlight and chlorophyll, gives glucose + oxygen."],["Do plants respire at night?","Yes. Respiration happens all the time in all living cells."],["Why are leaves green?","They contain chlorophyll, the green pigment that traps sunlight."]]},
+{t:"The digestive system",e:["Digestion breaks big food molecules into small ones that the blood can absorb. It starts in the mouth, where teeth chew and saliva begins to break down starch.","The food passes through the food pipe to the stomach, where acid and enzymes work on proteins. Most digestion and absorption happens in the small intestine, which has tiny finger-like villi. The large intestine absorbs water. Undigested waste leaves the body."],k:["Mouth → food pipe → stomach → small intestine → large intestine → anus.","Bile from the liver helps digest fats.","Villi increase the surface area for absorption.","Fibre in food helps the body get rid of waste."],qa:[["Where is most food absorbed?","In the small intestine, through the villi."],["What is the role of bile?","Bile, made by the liver, breaks fat into tiny droplets so it can be digested."],["Why should we chew our food well?","Chewing makes pieces smaller, so enzymes can work better, and saliva starts digesting starch."]]},
+{t:"The heart and blood circulation",e:["The heart is a muscular pump with four chambers: two atria on top and two ventricles below. It pushes blood around the body through blood vessels.","Arteries carry blood away from the heart. Veins bring blood back to the heart. Tiny capillaries connect them and let oxygen and nutrients pass into the tissues."],k:["Heart has 4 chambers.","Left ventricle has the thickest wall because it pumps blood to the whole body.","Red blood cells carry oxygen. White blood cells fight germs.","A resting adult heart beats about 60 to 100 times a minute."],qa:[["Which vessels carry blood away from the heart?","Arteries."],["Why is the left ventricle's wall thicker?","It has to pump blood to the whole body, which needs more force than pumping to the lungs."],["Which blood cells fight infection?","White blood cells."]]}],
+eng:[
+{t:"Tenses",e:["A tense shows when something happens: in the past, present or future. Each tense has simple, continuous and perfect forms.","Simple present: He plays cricket. Simple past: He played cricket. Simple future: He will play cricket. Present continuous: He is playing. Present perfect: He has played."],k:["Add -s to the verb with he, she and it in the simple present.","Regular past tense verbs end in -ed. Irregular verbs change: go → went.","Use 'will' for the simple future.","Continuous tense uses is, am or are plus verb-ing."],qa:[["Fill in: She ___ (go) to the market yesterday.","went. Go is irregular, and 'yesterday' tells us it is past."],["Change to the past tense: He plays cricket.","He played cricket."],["Which tense is 'They will visit the museum'?","Simple future tense."]]},
+{t:"Parts of speech",e:["Every word in a sentence plays a role. Nouns name things, pronouns replace nouns, verbs show action, adjectives describe nouns, adverbs describe verbs, prepositions show position, conjunctions join, and interjections show feeling.","To find the part of speech, look at what the word does in the sentence and not only at the word."],k:["Noun: Ravi, city, happiness.","Adjective: tall, red, beautiful.","Adverb: quickly, very, always.","The same word can change its role: 'a run' (noun) and 'to run' (verb)."],qa:[["Name the parts of speech: 'The quick fox jumps over the lazy dog.'","The: article, quick: adjective, fox: noun, jumps: verb, over: preposition, lazy: adjective, dog: noun."],["What is an adverb?","A word that tells more about a verb, adjective or another adverb, for example 'She sings sweetly'."],["Which word is a conjunction: 'and', 'under', 'happy'?","'and'."]]},
+{t:"Writing a letter and a paragraph",e:["A formal letter, such as one to your Principal, has: the sender's address, date, the receiver's address, a subject line, a greeting, the body, and a closing with your name. An informal letter to a friend is friendlier and needs no subject line.","A good paragraph has one main idea. It begins with a topic sentence, then supporting sentences give details, and the last sentence concludes. Exact letter formats can differ a little between textbooks, so follow your school's format."],k:["Formal greeting: 'Respected Sir/Madam,'.","Formal closing: 'Yours obediently,' or 'Yours faithfully,' followed by your name.","Keep the subject line short and clear.","One paragraph, one idea."],qa:[["How do you begin a formal letter to the Principal?","With 'Respected Sir/Madam,' after the address, date and subject line."],["What are the three parts of a paragraph?","A topic sentence, supporting sentences and a concluding sentence."],["Why does a formal letter have a subject line?","It tells the reader in one line what the letter is about."]]},
+{t:"Active and passive voice",e:["In the active voice, the doer comes first: Ravi writes a letter. In the passive voice, the thing receiving the action comes first: A letter is written by Ravi.","Use the passive when the doer is unknown or not important, such as 'The window was broken'. To change active to passive, move the object to the front, use the right form of 'be' and the past participle, and add 'by' plus the doer."],k:["Passive = form of 'be' + past participle.","Keep the same tense when changing voice.","Intransitive verbs (no object) cannot become passive.","'By + doer' can be left out if it is not needed."],qa:[["Change to passive: Ravi writes a letter.","A letter is written by Ravi."],["Change to passive: The cat chased the mouse.","The mouse was chased by the cat."],["When do we prefer the passive voice?","When the doer is unknown or unimportant, or the action matters more than the doer."]]}],
+hist:[
+{t:"India's freedom struggle",e:["The Revolt of 1857 was the first big uprising against the East India Company. In 1885 the Indian National Congress was founded. Later, Mahatma Gandhi led non-violent movements: Non-Cooperation (1920), the Salt March to Dandi (1930) and Quit India (1942).","After many years of struggle and sacrifice by people across the country, India became independent on 15 August 1947."],k:["1857: Revolt.","1885: Indian National Congress founded.","1930: Salt March, to protest the salt tax.","1942: Quit India, with the call 'Do or Die'.","1947: Independence."],qa:[["When was the Indian National Congress founded?","In 1885."],["Why did Gandhi lead the Salt March?","To protest against the British tax on salt, which hurt ordinary people. He broke the law by making salt at Dandi in 1930."],["What was the slogan of the Quit India Movement?","'Do or Die' (Karo ya Maro)."]]},
+{t:"Ancient India",e:["The Indus Valley civilisation (cities like Harappa and Mohenjo-daro) had well-planned streets, brick houses and covered drains, more than 4000 years ago. Later came the Vedic period and the great kingdoms.","The Maurya Empire was founded by Chandragupta Maurya with the help of his minister Chanakya (Kautilya). His grandson Ashoka spread the message of peace after the Kalinga war and had his messages carved on rocks and pillars."],k:["Harappan cities: planned roads and drainage.","Mauryas: first large empire in India.","Ashoka's edicts: messages of dhamma (right conduct).","Gupta period is often called a golden age of science and art."],qa:[["What was special about Harappan cities?","They had planned streets, brick houses and drainage systems."],["Who was Chandragupta Maurya's minister?","Chanakya, also called Kautilya."],["Why did Ashoka give up war?","He felt great sorrow at the suffering caused by the Kalinga war and turned to peace and Buddhism."]]},
+{t:"Medieval India",e:["The Delhi Sultanate ruled much of north India from the 1200s. In 1526 Babur defeated Ibrahim Lodi in the First Battle of Panipat and started the Mughal Empire. Akbar followed a policy of tolerance toward all religions.","In the south, the Vijayanagara Empire, with its capital at Hampi, became famous for trade, art and temples. Its greatest king was Krishnadevaraya, who was also a poet and patron of Telugu literature."],k:["1526: First Battle of Panipat.","Akbar: religious tolerance.","Shah Jahan built the Taj Mahal and the Red Fort.","Vijayanagara capital: Hampi."],qa:[["Who won the First Battle of Panipat in 1526?","Babur defeated Ibrahim Lodi."],["Name the great ruler of Vijayanagara.","Krishnadevaraya."],["What was special about Akbar's rule?","He treated people of all religions fairly and encouraged dialogue between them."]]}],
+civ:[
+{t:"The Constitution and fundamental rights",e:["The Constitution is the supreme law of India. It came into force on 26 January 1950. Its Preamble begins with 'We, the people of India' and promises justice, liberty, equality and fraternity.","Citizens have six fundamental rights: equality, freedom, protection against exploitation, freedom of religion, cultural and educational rights, and the right to constitutional remedies. Citizens also have fundamental duties, such as respecting the Constitution and protecting public property."],k:["Six fundamental rights.","Right to Constitutional Remedies lets us go to court (Article 32) when rights are violated.","Right to Education is a fundamental right for ages 6 to 14 (Article 21A).","Rights come with duties."],qa:[["How many fundamental rights are there?","Six."],["Which right allows a citizen to approach the Supreme Court if a right is violated?","The Right to Constitutional Remedies."],["Name two fundamental duties.","Respect the Constitution, national flag and anthem. Protect public property and the environment."]]},
+{t:"How our government works",e:["Government has three organs. The Legislature (Parliament and state assemblies) makes laws. The Executive (Prime Minister, Chief Ministers and officials) carries out the laws. The Judiciary (courts) explains the law and settles disputes.","Parliament has two houses: Lok Sabha and Rajya Sabha. In villages, the Panchayati Raj system lets people govern local matters through the Gram Panchayat, and above it the block or mandal level and the Zilla Parishad."],k:["Legislature makes, Executive implements, Judiciary interprets.","Supreme Court is the highest court.","President is the head of the state. Prime Minister heads the government.","Local self-government brings decisions close to people."],qa:[["Name the three organs of government.","Legislature, Executive and Judiciary."],["Who makes laws in India?","Parliament at the national level and the State Legislatures in states."],["Name the three levels of Panchayati Raj.","Gram Panchayat (village), Mandal or Block level, and Zilla Parishad (district)."]]},
+{t:"Democracy and elections",e:["In a democracy, people choose their leaders by voting. India has universal adult franchise: every citizen aged 18 or more can vote, whatever their religion, caste, gender or wealth. Voting is secret.","Elections are run by the independent Election Commission of India. The party or group that wins a majority in the Lok Sabha forms the government."],k:["Voting age: 18.","Voting is secret and free.","Election Commission of India conducts elections.","Every vote has equal value."],qa:[["Who conducts elections in India?","The Election Commission of India."],["Why is voting secret?","So that people can vote freely without fear or pressure."],["What does 'universal adult franchise' mean?","Every adult citizen has the right to vote, without any discrimination."]]}],
+geo:[
+{t:"The Earth: rotation, revolution and seasons",e:["The Earth spins on its axis once in about 24 hours. This rotation causes day and night. It also goes around the Sun once in about 365¼ days. This is revolution.","The Earth's axis is tilted by about 23.5°. Because of this tilt and the Earth's revolution, different parts get different amounts of sunlight during the year, which causes the seasons."],k:["Rotation: day and night.","Revolution: one year.","Tilt of the axis: seasons.","Equator is 0° latitude. The Prime Meridian is 0° longitude."],qa:[["Why do we have day and night?","Because the Earth rotates on its axis. The side facing the Sun has day, and the other side has night."],["What causes the seasons?","The tilt of the Earth's axis together with its revolution around the Sun."],["How long does the Earth take to go around the Sun?","About 365¼ days, which is why we add a leap day every four years."]]},
+{t:"The water cycle and monsoon",e:["Water keeps moving between the sea, air and land. Heat from the Sun evaporates water. The vapour rises, cools and condenses into clouds. It falls as rain, snow or hail (precipitation) and flows back to rivers and the sea.","India's rain mostly comes from the monsoon winds. In summer, land heats faster than the sea, so moist winds blow from the sea to the land and bring rain."],k:["Evaporation → condensation → precipitation → collection.","A rain gauge measures rainfall.","Southwest monsoon brings most of India's rain.","Saving water and rainwater harvesting protect our supply."],qa:[["Write the four stages of the water cycle.","Evaporation, condensation, precipitation and collection."],["Why does the monsoon bring rain?","Land heats faster than the sea, so moist winds blow in from the sea and release rain over the land."],["Which instrument measures rainfall?","A rain gauge."]]},
+{t:"India's physical features",e:["India has the Himalayas in the north, the fertile Northern Plains made by the Ganga, Indus and Brahmaputra, the Thar Desert in the west, the Peninsular Plateau (including the Deccan) in the south, and long coastlines.","Most large rivers of the peninsula, such as the Godavari, Krishna and Kaveri, flow east into the Bay of Bengal. The Narmada and Tapi flow west into the Arabian Sea. India also has two island groups: Andaman and Nicobar, and Lakshadweep."],k:["Himalayas: young fold mountains.","Northern Plains: very fertile, densely populated.","Deccan Plateau: ancient rocks.","Andaman and Nicobar are in the Bay of Bengal. Lakshadweep is in the Arabian Sea."],qa:[["Name three major regions of India's physical features.","The Himalayas, the Northern Plains and the Peninsular Plateau, along with the Thar Desert, the coastal plains and the islands."],["Which rivers of South India flow into the Bay of Bengal?","Godavari, Krishna and Kaveri."],["Which sea are the Lakshadweep islands in?","The Arabian Sea."]]}],
+eco:[
+{t:"Demand, supply and price",e:["Demand is how much of a thing people want and can pay for. Supply is how much sellers are ready to sell. Price tends to settle where the two meet.","If many people want something but there is little of it, the price goes up. If there is plenty and few buyers, the price goes down. For example, mangoes are cheaper in the mango season because supply is high."],k:["More demand and the same supply: price rises.","More supply and the same demand: price falls.","Needs are essential, wants are extras.","Price changes tell buyers and sellers what to do."],qa:[["Why do mango prices fall in the mango season?","Supply is high because many mangoes are available, so the price falls."],["What happens to the price if demand rises and supply stays the same?","The price usually rises."],["Difference between a need and a want?","A need is essential for life, such as food and water. A want is something extra that we would like to have."]]},
+{t:"Money, banks and interest",e:["Money works as a medium of exchange, a store of value and a unit of account. Banks keep our savings safe and give loans to people and businesses. They pay interest on deposits and charge interest on loans.","Simple interest is calculated only on the original amount (principal): SI = (P × R × T) ÷ 100. Compound interest is calculated on the principal plus the interest already earned, so it grows faster."],k:["Banks give safety and interest on savings.","SI = P × R × T ÷ 100.","The Reserve Bank of India (RBI) regulates banks and issues notes.","Never share your PIN or OTP with anyone."],qa:[["Find the simple interest on ₹1000 at 10% per year for 2 years.","SI = (1000 × 10 × 2) ÷ 100 = ₹200."],["Why should people deposit money in a bank?","It is safe, and the bank pays interest on the deposit."],["What is the difference between simple and compound interest?","Simple interest is calculated on the principal only. Compound interest is calculated on the principal plus earlier interest."]]},
+{t:"Sectors of the economy",e:["Economic activities are grouped into three sectors. The primary sector uses natural resources: farming, fishing, mining. The secondary sector turns raw materials into goods: factories and construction. The tertiary sector provides services: teaching, banking, transport, healthcare.","As a country develops, more people usually move from farming to industry and services."],k:["Primary: from nature.","Secondary: manufacturing.","Tertiary: services.","Agriculture employs a large share of people in India."],qa:[["Classify: farming, a car factory and teaching.","Farming: primary. Car factory: secondary. Teaching: tertiary."],["What is the secondary sector?","The sector that turns raw materials into finished goods, such as factories and construction."],["Is banking a primary, secondary or tertiary activity?","Tertiary, because it is a service."]]}],
+comp:[
+{t:"Hardware and software",e:["Hardware is the parts of a computer you can touch: keyboard, mouse, monitor, CPU. Software is the programs that tell the hardware what to do. System software, such as Windows or Android, runs the computer. Application software, such as a browser or a game, does a specific job.","A computer takes input, processes it in the CPU, stores it in memory and gives output. RAM is fast, temporary memory used while working. A hard disk or SSD stores files permanently."],k:["Input: keyboard, mouse, scanner.","Output: monitor, printer, speaker.","RAM loses its data when power is off.","Storage keeps files after power is off."],qa:[["Difference between RAM and a hard disk?","RAM is temporary, fast memory for work in progress. A hard disk stores data permanently."],["Give two examples of system software.","Windows, Linux, Android or macOS."],["Name one input and one output device.","Input: keyboard. Output: monitor."]]},
+{t:"The internet and staying safe online",e:["The internet connects computers around the world. We use a browser to visit websites through their URLs, and email to send messages. A strong password is long, mixes letters, numbers and symbols, and is not about you, like your name or birthday.","Phishing is a trick where fake messages or websites try to steal passwords, OTPs or bank details. Never click strange links, never share OTPs, and tell a trusted adult if something feels wrong."],k:["Use a different password for each important account.","Never share your OTP or PIN.","Be careful with strangers online.","Think before you post. The internet remembers."],qa:[["What makes a strong password?","It is long, mixes letters, numbers and symbols, and has nothing personal in it."],["What is phishing?","Fake messages or websites that try to trick you into giving personal information."],["What should you do if a stranger online makes you uncomfortable?","Stop talking, do not share personal details, and tell a parent, teacher or trusted adult."]]},
+{t:"Algorithms and flowcharts",e:["An algorithm is a set of clear steps to solve a problem. A flowchart draws those steps with shapes and arrows. Oval: start or stop. Rectangle: a process or calculation. Diamond: a decision (yes or no). Parallelogram: input or output.","Example algorithm to add two numbers: Start. Read a and b. Set sum = a + b. Print sum. Stop."],k:["Steps must be clear and in order.","Decision boxes have two exits: yes and no.","Loops repeat steps.","Programs are algorithms written in a programming language."],qa:[["Write an algorithm to add two numbers.","1. Start. 2. Input a and b. 3. sum = a + b. 4. Print sum. 5. Stop."],["Which flowchart shape is used for a decision?","A diamond."],["What is the use of a flowchart?","It shows the steps of a solution clearly, so it is easy to understand and check."]]}],
+gk:[
+{t:"The Solar System",e:["The Solar System has the Sun at the centre and eight planets going around it, in this order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune. The first four are small and rocky. The last four are large gas or ice giants.","Pluto was reclassified as a dwarf planet in 2006. The Moon is Earth's natural satellite. Sunlight takes about 8 minutes to reach us."],k:["Mercury is closest to the Sun.","Jupiter is the largest planet.","Saturn is famous for its rings.","Mars is called the Red Planet."],qa:[["Name the planets in order from the Sun.","Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune."],["Which is the largest planet?","Jupiter."],["Which planet is known as the Red Planet?","Mars."]]},
+{t:"National symbols of India",e:["National symbols are shown with pride. The national flag has saffron, white and green bands with the Ashoka Chakra in navy blue. The national emblem is the Lion Capital of Ashoka. The national anthem is 'Jana Gana Mana', written by Rabindranath Tagore, and takes about 52 seconds to play.","The national animal is the tiger, the national bird is the peacock, the national flower is the lotus and the national fruit is the mango."],k:["Flag colours: saffron, white, green.","Ashoka Chakra has 24 spokes.","Anthem: Jana Gana Mana.","Respect the flag and the anthem."],qa:[["How many spokes does the Ashoka Chakra have?","24."],["Who wrote the national anthem?","Rabindranath Tagore."],["Name India's national animal, bird and flower.","Tiger, peacock and lotus."]]}],
+life:[
+{t:"Active recall and spaced repetition",e:["Reading a chapter again and again feels useful, but it is not the best way to remember. Active recall means closing the book and testing yourself: write or say everything you remember, then check what you missed.","Spaced repetition means revising the same topic after 1 day, 3 days, then 7 days. Each time you almost forget and then recall it, the memory becomes stronger."],k:["Test yourself, do not only reread.","Revise after 1, 3 and 7 days.","Use flashcards for facts and formulas.","Explain a topic in simple words to check that you understand it."],qa:[["How can I revise a chapter in 15 minutes?","Close the book. Spend 5 minutes writing what you remember. Spend 5 minutes checking against the book. Spend 5 minutes fixing the gaps."],["Why is spaced revision better than cramming?","Revising a little over many days helps the memory last. Cramming is forgotten quickly."],["What is a good use of flashcards?","Put a question on the front and the answer on the back. Try to say the answer before you flip the card."]]},
+{t:"Exam preparation and stress",e:["Make a simple timetable that covers every subject, with the hard topics first when you are fresh. Practise past papers in the exam time limit. Sleep 8 to 10 hours, eat well and take short breaks. The 25 and 5 method (25 minutes of focus, 5 minutes of rest) helps many students.","Feeling nervous is normal. Slow breathing helps: breathe in for 4 counts, hold 4, breathe out 4, hold 4. If the worry feels too big, talk to a parent, teacher or friend. In India, Tele-MANAS (14416) is a free helpline."],k:["Plan, practise, sleep.","The night before: light revision, pack your bag, sleep on time.","In the exam, read the paper fully and start with questions you know.","One exam does not decide your whole life."],qa:[["What should I do if my mind goes blank in the exam?","Breathe slowly for a few moments, move on to an easier question, and return later. The answer often comes back."],["How should I spend the night before an exam?","Do light revision, prepare your things, eat well and sleep on time."],["How can I use my time better while studying?","Use 25-minute focus sessions with 5-minute breaks, and keep your phone away."]]},
+{t:"Making good notes",e:["Notes are for you to revise later, so keep them short and clear. Write headings, key words, formulas and small diagrams, not whole sentences copied from the book.","Mind maps put the main topic in the centre and branches for sub-topics. The Cornell method divides the page into a notes column, a cue column for questions, and a summary at the bottom, so you can test yourself later."],k:["Use your own words.","Use colours or boxes for key points.","Write questions in the margin for self-testing.","Review notes within 24 hours."],qa:[["What is a mind map?","A diagram with the main topic in the middle and branches for sub-topics and key words."],["Why should I use my own words in notes?","Putting an idea in your own words shows whether you really understand it, and makes it easier to remember."],["When should I review new notes?","Within 24 hours, then again after a few days."]]}]
+};
+
+// ---------- helpers ----------
+var $=function(s){return document.querySelector(s)};
+var app=$("#app");
+function sub(id){for(var i=0;i<SUBJ.length;i++)if(SUBJ[i].id===id)return SUBJ[i];return null}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dayDiff(a,b){return Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000)}
+var store={streak:0,last:"",best:{},answered:0,correct:0,focus:0};
+try{var raw=localStorage.getItem("sb-learn");if(raw){var o=JSON.parse(raw);for(var k in o)store[k]=o[k]}}catch(e){}
+function save(){try{localStorage.setItem("sb-learn",JSON.stringify(store))}catch(e){}}
+function touchStreak(){var t=today();if(store.last===t)return;store.streak=(store.last&&dayDiff(store.last,t)===1)?store.streak+1:1;store.last=t;save();drawStreak()}
+function liveStreak(){if(!store.last)return 0;var d=dayDiff(store.last,today());return d<=1?store.streak:0}
+function drawStreak(){var s=liveStreak();$("#streak").textContent=s>0?s+(s===1?" day streak":" day streak"):"Start a streak"}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+// ---------- state ----------
+var view={tab:"home",screen:"main"};
+var quiz=null, deck=null;
+var T={mode:"focus",left:1500,running:false,end:0,id:null};
+
+function setTab(t){view={tab:t,screen:"main"};quiz=null;deck=null;render();window.scrollTo(0,0)}
+
+function tiles(act){
+  return '<div class="grid">'+SUBJ.map(function(s){
+    return '<button class="tile" data-act="'+act+'" data-id="'+s.id+'"><span class="badge" style="--h:'+s.h+'">'+esc(s.s)+'</span><span><b>'+esc(s.n)+'</b><small>'+esc(s.te)+'</small></span></button>'}).join("")+'</div>';
+}
+
+// ---------- views ----------
+function home(){
+  var all=[];SUBJ.forEach(function(s){C[s.id].forEach(function(c){all.push([s,c])})});
+  var d=new Date(),doy=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+  var f=all[doy%all.length];
+  var acc=store.answered?Math.round(100*store.correct/store.answered)+"%":"0%";
+  return '<div class="stack"><div><h1>Learn something new today</h1><p class="sub" style="margin-top:6px">12 subjects, quick quizzes, flashcards and a focus timer. Free for everyone.</p></div>'+
+  '<div class="card fact"><div class="k">Fact of the day · '+esc(f[0].n)+'</div><div class="q">'+esc(f[1][0])+'</div><div class="a">'+esc(f[1][1])+'</div></div>'+
+  '<div class="stats"><div class="stat"><b>'+store.answered+'</b><span>answered</span></div><div class="stat"><b>'+acc+'</b><span>correct</span></div><div class="stat"><b>'+liveStreak()+'</b><span>day streak</span></div></div>'+
+  '<button class="btn full" data-act="tab" data-t="learn">Lessons and explanations: all subjects</button>'+'<button class="btn warm full" data-act="quiz" data-id="mix">Mixed quiz: 10 questions from all subjects</button>'+
+  '<h2>Pick a subject</h2>'+tiles("pick")+'</div>';
+}
+function subjectPage(id){
+  var s=sub(id),b=store.best[id];
+  return '<div class="stack"><button class="back" data-act="home">← All subjects</button>'+
+  '<div class="row" style="align-items:center;flex-wrap:nowrap"><span class="badge" style="--h:'+s.h+'">'+esc(s.s)+'</span><div><h1>'+esc(s.n)+'</h1><p class="sub">'+esc(s.te)+'</p></div></div>'+
+  '<div class="card stack" style="gap:12px"><p>'+Q[id].length+' quiz questions and '+C[id].length+' flashcards.'+(b!=null?' Your best score: <b>'+b+'/'+Q[id].length+'</b>.':'')+'</p>'+
+  '<button class="btn full" data-act="quiz" data-id="'+id+'">Start quiz</button><button class="btn alt full" data-act="cards" data-id="'+id+'">Study flashcards</button></div></div>';
+}
+function startQuiz(id){
+  var items;
+  if(id==="mix"){
+    var pool=[];SUBJ.forEach(function(s){Q[s.id].forEach(function(q){pool.push([s.id,q])})});
+    items=shuffle(pool).slice(0,10);
+  }else items=shuffle(Q[id].map(function(q){return [id,q]}));
+  items=items.map(function(it){
+    var q=it[1],opts=q[1].split("|").map(function(t,i){return{t:t,ok:i===q[2]}});
+    return{sid:it[0],q:q[0],opts:shuffle(opts),why:q[3]};
+  });
+  quiz={id:id,items:items,i:0,score:0,picked:-1};
+  view.screen="quiz";render();window.scrollTo(0,0);
+}
+function quizView(){
+  var it=quiz.items[quiz.i],n=quiz.items.length,done=quiz.picked>=0;
+  var h='<div class="stack"><div class="top"><button class="back" data-act="quit">← Quit</button><span class="sub">'+(quiz.id==="mix"?esc(sub(it.sid).n)+' · ':'')+'Question '+(quiz.i+1)+' of '+n+'</span></div>'+
+  '<div class="bar"><i style="width:'+Math.round(100*quiz.i/n)+'%"></i></div><p class="qtext">'+esc(it.q)+'</p><div class="opts">';
+  it.opts.forEach(function(o,i){
+    var cls="opt";if(done){if(o.ok)cls+=" right";else if(i===quiz.picked)cls+=" wrong"}
+    h+='<button class="'+cls+'" data-act="ans" data-i="'+i+'"'+(done?' disabled':'')+'>'+esc(o.t)+'</button>';
+  });
+  h+='</div>';
+  if(done){
+    var ok=it.opts[quiz.picked].ok;
+    h+='<div class="why '+(ok?'ok':'no')+'"><b>'+(ok?'Correct!':'Not quite.')+'</b>'+esc(it.why)+'</div><button class="btn full" data-act="next">'+(quiz.i+1<n?'Next question':'See my score')+'</button>';
+  }
+  return h+'</div>';
+}
+function resultView(){
+  var n=quiz.items.length,s=quiz.score,pct=s/n;
+  var msg=pct===1?"Perfect score! Brilliant work.":pct>=0.75?"Great job! You know this well.":pct>=0.5?"Good effort. A little more practice will help.":"Keep going. Try the flashcards, then take the quiz again.";
+  var again=quiz.id!=="mix"?'<button class="btn alt full" data-act="cards" data-id="'+quiz.id+'">Study flashcards</button>':'';
+  return '<div class="stack" style="text-align:center"><p class="sub">'+(quiz.id==="mix"?"Mixed quiz":esc(sub(quiz.id).n))+' quiz finished</p><div class="score">'+s+'<span style="font-size:32px;color:var(--muted)">/'+n+'</span></div><h2>'+msg+'</h2>'+
+  '<div class="stack" style="gap:10px"><button class="btn full" data-act="quiz" data-id="'+quiz.id+'">Try again</button>'+again+'<button class="btn alt full" data-act="home">Back to subjects</button></div></div>';
+}
+function startCards(id){
+  deck={id:id,list:shuffle(C[id]),i:0,flip:false,known:0,total:C[id].length};
+  view.screen="cards";render();window.scrollTo(0,0);
+}
+function cardsView(){
+  var s=sub(deck.id);
+  var chips='<div class="chips">'+SUBJ.map(function(x){return '<button class="chip'+(x.id===deck.id?' on':'')+'" data-act="cards" data-id="'+x.id+'">'+esc(x.n)+'</button>'}).join("")+'</div>';
+  if(deck.i>=deck.list.length){
+    return '<div class="stack">'+chips+'<div class="card stack" style="text-align:center"><h2>Deck complete!</h2><p class="sub">You went through all '+deck.total+' '+esc(s.n)+' cards.</p><button class="btn full" data-act="cards" data-id="'+deck.id+'">Shuffle and go again</button><button class="btn alt full" data-act="quiz" data-id="'+deck.id+'">Take the quiz</button></div></div>';
+  }
+  var c=deck.list[deck.i];
+  var face=deck.flip?'<div class="fc ans" data-act="flip" role="button" tabindex="0"><span class="side">Answer</span><span class="big">'+esc(c[1])+'</span></div>':
+    '<div class="fc" data-act="flip" role="button" tabindex="0"><span class="side">'+esc(s.n)+' · tap to flip</span><span class="big">'+esc(c[0])+'</span></div>';
+  var btns=deck.flip?'<div class="row"><button class="btn alt" style="flex:1" data-act="again">Show again</button><button class="btn" style="flex:1" data-act="know">I know it</button></div>':'<button class="btn full" data-act="flip">Show answer</button>';
+  return '<div class="stack">'+chips+'<div class="top"><span class="sub">'+deck.known+' of '+deck.total+' known</span><span class="sub">Cards left: '+(deck.list.length-deck.i)+'</span></div><div class="bar"><i style="width:'+Math.round(100*deck.known/deck.total)+'%"></i></div>'+face+btns+'</div>';
+}
+var lsub="maths";
+var WA="918688461707";
+function askBox(key,ctx,title,hint){
+  var base="Hello StudyBridge, I have a doubt"+(ctx?" ("+ctx+")":"")+": ";
+  return '<div class="card stack" style="gap:10px"><h3>'+esc(title)+'</h3><p class="sub">'+esc(hint)+'</p>'+
+  '<textarea id="q-'+key+'" rows="3" placeholder="Type your doubt here. You can write in English or Telugu." data-key="'+key+'" data-wa="'+esc(base)+'"></textarea>'+
+  '<div class="row"><button class="btn" style="flex:1" data-act="ask" data-k="'+key+'" data-ctx="'+esc(ctx||"")+'">Ask the tutor</button><a class="btn alt" style="flex:1" id="wa-'+key+'" href="https://wa.me/'+WA+'?text='+encodeURIComponent(base)+'" target="_blank" rel="noopener">Send on WhatsApp</a></div>'+
+  '<div class="aiout" id="out-'+key+'" hidden></div><p class="note">The tutor is an AI and can make mistakes. Check important answers with your teacher or textbook. Please do not share personal details.</p></div>';
+}
+function learnView(){
+  var chips='<div class="chips">'+SUBJ.map(function(x){return '<button class="chip'+(x.id===lsub?' on':'')+'" data-act="lsub" data-id="'+x.id+'">'+esc(x.n)+'</button>'}).join("")+'</div>';
+  var s=sub(lsub);
+  var rows=L[lsub].map(function(t,i){return '<button class="trow" data-act="topic" data-s="'+lsub+'" data-i="'+i+'"><span>'+esc(t.t)+'</span><em>Open</em></button>'}).join("");
+  return '<div class="stack"><div><h1>Lessons</h1><p class="sub" style="margin-top:6px">Simple explanations with key points and practice questions. Written in our own words, for Class 6 to 10 level. Chapter names in your textbook may differ.</p></div>'+
+  chips+'<h2>'+esc(s.n)+' topics</h2><div class="stack" style="gap:10px">'+rows+'</div>'+
+  askBox("main","","Ask any doubt","Stuck on a lesson or a textbook question? Type it here.")+'</div>';
+}
+function topicView(){
+  var s=sub(view.s),t=L[view.s][view.i];
+  var ps=t.e.map(function(x){return '<p class="para">'+esc(x)+'</p>'}).join("");
+  var ks=t.k.map(function(x){return '<li>'+esc(x)+'</li>'}).join("");
+  var qa=t.qa.map(function(x){return '<details class="qa"><summary>'+esc(x[0])+'</summary><div class="a">'+esc(x[1])+'</div></details>'}).join("");
+  return '<div class="stack"><button class="back" data-act="learnback">← '+esc(s.n)+' topics</button>'+
+  '<div class="row" style="align-items:center;flex-wrap:nowrap"><span class="badge" style="--h:'+s.h+'">'+esc(s.s)+'</span><h1 style="font-size:26px">'+esc(t.t)+'</h1></div>'+
+  ps+'<div class="card stack" style="gap:10px"><h3>Key points</h3><ul class="kp">'+ks+'</ul></div>'+
+  '<h2>Practice questions</h2><p class="sub">Try each one first. Then tap to see the answer.</p><div class="stack" style="gap:10px">'+qa+'</div>'+
+  askBox("topic","Topic: "+t.t+" ("+s.n+")","Still confused?","Ask about this topic in your own words.")+
+  '<div class="row"><button class="btn" style="flex:1" data-act="quiz" data-id="'+view.s+'">Take the '+esc(s.n)+' quiz</button><button class="btn alt" style="flex:1" data-act="cards" data-id="'+view.s+'">Flashcards</button></div></div>';
+}
+async function askTutor(key,ctx){
+  var ta=$("#q-"+key),out=$("#out-"+key);if(!ta||!out)return;
+  var q=ta.value.trim();out.hidden=false;
+  if(!q){out.textContent="Please type your doubt first.";return}
+  out.textContent="Thinking...";
+  var sm=null;try{sm=await (window.claude&&window.claude.use?window.claude.use("sample"):null)}catch(e){sm=null}
+  if(!sm){out.textContent="The AI tutor is not available on this page yet. Please tap Send on WhatsApp and we will answer you. Your doubt is already typed in.";return}
+  var prompt="You are the StudyBridge tutor for students and learners of all ages in India. Explain in simple words, step by step, using short paragraphs. Keep the answer under 200 words unless the student asks for more. For maths and science, show the working. If the question is in Telugu, answer in Telugu; otherwise answer in English. Do not copy textbook text; explain in your own words. If the student seems very upset, be kind and suggest talking to a trusted adult, and mention that Tele-MANAS 14416 is a free helpline in India. Never ask for personal details. End with one short question to check understanding."+(ctx?"\nTopic context: "+ctx:"")+"\nStudent's question: "+q;
+  try{
+    var res=await sm(prompt,{cache:false,onText:function(r){out.textContent=r.text}});
+    if(res&&res.text)out.textContent=res.text;
+  }catch(e){
+    var c=e&&e.code;
+    out.textContent=c==="rate_limited"?"The tutor is busy. Please wait a minute and try again, or tap Send on WhatsApp.":c==="not_granted"?"The tutor was not allowed in this view. Please tap Send on WhatsApp and we will answer you.":"Sorry, the tutor could not answer now. Please tap Send on WhatsApp and we will answer you.";
+  }
+}
+function fmt(sec){var m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
+function focusView(){
+  var total=T.mode==="focus"?1500:300,p=Math.round(100*(total-T.left)/total);
+  return '<div class="stack"><div><h1>Focus timer</h1><p class="sub" style="margin-top:6px">Study for 25 minutes, then rest for 5. Keep your phone in another room.</p></div>'+
+  '<div class="row"><button class="chip'+(T.mode==="focus"?' on':'')+'" data-act="mode" data-m="focus">Focus 25</button><button class="chip'+(T.mode==="break"?' on':'')+'" data-act="mode" data-m="break">Break 5</button></div>'+
+  '<div class="ring" id="ring" style="--p:'+p+'%"><div><div><div class="timer" id="tm">'+fmt(T.left)+'</div><small id="tl">'+(T.mode==="focus"?"Focus time":"Break time")+'</small></div></div></div>'+
+  '<div class="row"><button class="btn" style="flex:2" data-act="tstart" id="tgo">'+(T.running?"Pause":"Start")+'</button><button class="btn alt" style="flex:1" data-act="treset">Reset</button></div>'+
+  '<div class="card"><h3>Focus sessions finished</h3><p class="sub" style="margin-top:4px"><b style="color:var(--ink);font-size:22px;font-family:var(--display)">'+store.focus+'</b> so far</p></div></div>';
+}
+function beep(){try{var a=new (window.AudioContext||window.webkitAudioContext)();[660,880,1100].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.frequency.value=f;o.connect(g);g.connect(a.destination);var t=a.currentTime+i*0.28;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.25,t+0.03);g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);o.start(t);o.stop(t+0.3)})}catch(e){}}
+function tick(){
+  var left=Math.max(0,Math.round((T.end-Date.now())/1000));T.left=left;
+  if(left<=0){
+    clearInterval(T.id);T.running=false;beep();
+    if(T.mode==="focus"){store.focus++;save();touchStreak()}
+    T.mode=T.mode==="focus"?"break":"focus";T.left=T.mode==="focus"?1500:300;
+  }
+  if(left<=0||T.mode===undefined)render();else paintTimer();
+}
+function paintTimer(){var tm=$("#tm");if(!tm)return;tm.textContent=fmt(T.left);var total=T.mode==="focus"?1500:300,r=$("#ring");if(r)r.style.setProperty("--p",Math.round(100*(total-T.left)/total)+"%")}
+
+// ---------- render ----------
+function render(){
+  var tabs=[["home","Home"],["learn","Learn"],["quiz","Quiz"],["cards","Cards"],["focus","Focus"]];
+  $("#nav").innerHTML=tabs.map(function(t){return '<button class="tab'+(view.tab===t[0]?' on':'')+'" data-act="tab" data-t="'+t[0]+'">'+t[1]+'</button>'}).join("");
+  var h="";
+  if(view.screen==="quiz"&&quiz)h=quizView();
+  else if(view.screen==="result"&&quiz)h=resultView();
+  else if(view.screen==="cards"&&deck)h=cardsView();
+  else if(view.screen==="subject")h=subjectPage(view.id);
+  else if(view.screen==="topic")h=topicView();
+  else if(view.tab==="home")h=home();
+  else if(view.tab==="learn")h=learnView();
+  else if(view.tab==="quiz")h='<div class="stack"><div><h1>Quiz time</h1><p class="sub" style="margin-top:6px">Pick a subject for 8 questions, or mix them all.</p></div><button class="btn warm full" data-act="quiz" data-id="mix">Mixed quiz: 10 questions</button>'+tiles("quiz")+'</div>';
+  else if(view.tab==="cards")h='<div class="stack"><div><h1>Flashcards</h1><p class="sub" style="margin-top:6px">Tap a card to flip it. Mark the ones you know.</p></div>'+tiles("cards")+'</div>';
+  else h=focusView();
+  app.innerHTML=h;
+  drawStreak();
+}
+
+app.addEventListener("click",function(e){handle(e.target.closest("[data-act]"))});
+$("#nav").addEventListener("click",function(e){handle(e.target.closest("[data-act]"))});
+app.addEventListener("input",function(e){var t=e.target;if(t&&t.tagName==="TEXTAREA"){var a=$("#wa-"+t.dataset.key);if(a)a.href="https://wa.me/"+WA+"?text="+encodeURIComponent((t.dataset.wa||"")+t.value)}});
+app.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&e.target.getAttribute("data-act")==="flip"){e.preventDefault();handle(e.target)}});
+function handle(b){
+  if(!b)return;var a=b.dataset.act,d=b.dataset;
+  if(a==="tab")setTab(d.t);
+  else if(a==="home")setTab("home");
+  else if(a==="lsub"){lsub=d.id;render()}
+  else if(a==="topic"){view={tab:"learn",screen:"topic",s:d.s,i:+d.i};render();window.scrollTo(0,0)}
+  else if(a==="learnback"){view={tab:"learn",screen:"main"};render();window.scrollTo(0,0)}
+  else if(a==="ask")askTutor(d.k,d.ctx);
+  else if(a==="pick"){view={tab:"home",screen:"subject",id:d.id};render();window.scrollTo(0,0)}
+  else if(a==="quiz")startQuiz(d.id);
+  else if(a==="cards")startCards(d.id);
+  else if(a==="quit"){var t=view.tab;quiz=null;view={tab:t,screen:"main"};render()}
+  else if(a==="ans"&&quiz&&quiz.picked<0){
+    var i=+d.i;quiz.picked=i;var ok=quiz.items[quiz.i].opts[i].ok;
+    store.answered++;if(ok){store.correct++;quiz.score++}save();render();
+  }
+  else if(a==="next"){
+    quiz.i++;quiz.picked=-1;
+    if(quiz.i>=quiz.items.length){
+      if(quiz.id!=="mix"){var p=store.best[quiz.id];if(p==null||quiz.score>p)store.best[quiz.id]=quiz.score}
+      save();touchStreak();view.screen="result";
+    }
+    render();window.scrollTo(0,0);
+  }
+  else if(a==="flip"){deck.flip=!deck.flip;render()}
+  else if(a==="know"){deck.known++;deck.i++;deck.flip=false;if(deck.i>=deck.list.length)touchStreak();render()}
+  else if(a==="again"){var c=deck.list[deck.i];deck.list.push(c);deck.i++;deck.flip=false;render()}
+  else if(a==="mode"){if(T.running){clearInterval(T.id);T.running=false}T.mode=d.m;T.left=d.m==="focus"?1500:300;render()}
+  else if(a==="tstart"){
+    if(T.running){clearInterval(T.id);T.running=false;T.left=Math.max(0,Math.round((T.end-Date.now())/1000))}
+    else{T.running=true;T.end=Date.now()+T.left*1000;T.id=setInterval(tick,500)}
+    render();
+  }
+  else if(a==="treset"){clearInterval(T.id);T.running=false;T.left=T.mode==="focus"?1500:300;render()}
+}
+render();
+</script>
+
+</body>
+</html>
