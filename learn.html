@@ -437,8 +437,8 @@ function askBox(key,ctx,title,hint){
   var base="Hello StudyBridge, I have a doubt"+(ctx?" ("+ctx+")":"")+": ";
   return '<div class="card stack" style="gap:10px"><h3>'+esc(title)+'</h3><p class="sub">'+esc(hint)+'</p>'+
   '<textarea id="q-'+key+'" rows="3" placeholder="Type your doubt here. You can write in English or Telugu." data-key="'+key+'" data-wa="'+esc(base)+'"></textarea>'+
-  '<div class="row"><button class="btn" style="flex:1" data-act="ask" data-k="'+key+'" data-ctx="'+esc(ctx||"")+'">Ask the tutor</button><a class="btn alt" style="flex:1" id="wa-'+key+'" href="https://wa.me/'+WA+'?text='+encodeURIComponent(base)+'" target="_blank" rel="noopener">Send on WhatsApp</a></div>'+
-  '<div class="aiout" id="out-'+key+'" hidden></div><p class="note">The tutor is an AI and can make mistakes. Check important answers with your teacher or textbook. Please do not share personal details.</p></div>';
+  '<div class="row"><button class="btn" style="flex:1" data-act="ask" data-k="'+key+'" data-ctx="'+esc(ctx||"")+'">Search and ask</button><a class="btn alt" style="flex:1" id="wa-'+key+'" href="https://wa.me/'+WA+'?text='+encodeURIComponent(base)+'" target="_blank" rel="noopener">Send on WhatsApp</a></div>'+
+  '<div class="aiout" id="out-'+key+'" hidden></div><p class="note">Search results come from our lessons. Check important answers with your teacher or textbook. Please do not share personal details.</p></div>';
 }
 function learnView(){
   var chips='<div class="chips">'+SUBJ.map(function(x){return '<button class="chip'+(x.id===lsub?' on':'')+'" data-act="lsub" data-id="'+x.id+'">'+esc(x.n)+'</button>'}).join("")+'</div>';
@@ -446,7 +446,7 @@ function learnView(){
   var rows=L[lsub].map(function(t,i){return '<button class="trow" data-act="topic" data-s="'+lsub+'" data-i="'+i+'"><span>'+esc(t.t)+'</span><em>Open</em></button>'}).join("");
   return '<div class="stack"><div><h1>Lessons</h1><p class="sub" style="margin-top:6px">Simple explanations with key points and practice questions. Written in our own words, for Class 6 to 10 level. Chapter names in your textbook may differ.</p></div>'+
   chips+'<h2>'+esc(s.n)+' topics</h2><div class="stack" style="gap:10px">'+rows+'</div>'+
-  askBox("main","","Ask any doubt","Stuck on a lesson or a textbook question? Type it here.")+'</div>';
+  askBox("main","","Search or ask a doubt","Type a word like photosynthesis or Pythagoras to find a lesson, or send your doubt on WhatsApp.")+'</div>';
 }
 function topicView(){
   var s=sub(view.s),t=L[view.s][view.i];
@@ -460,20 +460,39 @@ function topicView(){
   askBox("topic","Topic: "+t.t+" ("+s.n+")","Still confused?","Ask about this topic in your own words.")+
   '<div class="row"><button class="btn" style="flex:1" data-act="quiz" data-id="'+view.s+'">Take the '+esc(s.n)+' quiz</button><button class="btn alt" style="flex:1" data-act="cards" data-id="'+view.s+'">Flashcards</button></div></div>';
 }
+var STOP={the:1,and:1,what:1,why:1,how:1,who:1,when:1,where:1,which:1,is:1,are:1,was:1,does:1,did:1,can:1,you:1,for:1,with:1,that:1,this:1,from:1,about:1,give:1,tell:1,explain:1,meaning:1,define:1,solve:1,find:1,write:1,please:1};
+function searchLessons(q){
+  var words=q.toLowerCase().replace(/[^a-z0-9\u0c00-\u0c7f ]/g," ").split(/\s+/).filter(function(w){return w.length>2&&!STOP[w]});
+  if(!words.length)return[];
+  var res=[];
+  SUBJ.forEach(function(sj){L[sj.id].forEach(function(t,i){
+    var title=t.t.toLowerCase(),body=(t.e.join(" ")+" "+t.k.join(" ")).toLowerCase(),qa=t.qa.map(function(x){return x[0]+" "+x[1]}).join(" ").toLowerCase(),sc=0;
+    words.forEach(function(w){var st=w.length>4?w.slice(0,w.length-1):w;if(title.indexOf(st)>=0)sc+=6;if(qa.indexOf(st)>=0)sc+=3;if(body.indexOf(st)>=0)sc+=2});
+    if(sc>0)res.push({s:sj.id,i:i,t:t.t,n:sj.n,sc:sc});
+  })});
+  res.sort(function(a,b){return b.sc-a.sc});
+  return res.slice(0,4);
+}
+function offlineHelp(q,out){
+  var r=searchLessons(q),h;
+  if(r.length){
+    h='<p><b>These lessons may help:</b></p><div class="stack" style="gap:8px;margin-top:8px">'+r.map(function(x){return '<button class="trow" data-act="topic" data-s="'+x.s+'" data-i="'+x.i+'"><span>'+esc(x.t)+' <small style="font-weight:400;color:var(--muted)">('+esc(x.n)+')</small></span><em>Open</em></button>'}).join("")+'</div><p class="note" style="margin-top:10px">Not what you wanted? Tap Send on WhatsApp and we will answer you.</p>';
+  }else h='<p>We could not find a matching lesson yet. Please tap <b>Send on WhatsApp</b>. Your doubt is already typed in, and we will answer you.</p>';
+  out.style.whiteSpace="normal";out.innerHTML=h;
+}
 async function askTutor(key,ctx){
   var ta=$("#q-"+key),out=$("#out-"+key);if(!ta||!out)return;
   var q=ta.value.trim();out.hidden=false;
   if(!q){out.textContent="Please type your doubt first.";return}
-  out.textContent="Thinking...";
+  out.style.whiteSpace="pre-wrap";out.textContent="Looking...";
   var sm=null;try{sm=await (window.claude&&window.claude.use?window.claude.use("sample"):null)}catch(e){sm=null}
-  if(!sm){out.textContent="The AI tutor is not available on this page yet. Please tap Send on WhatsApp and we will answer you. Your doubt is already typed in.";return}
+  if(!sm){offlineHelp(q,out);return}
   var prompt="You are the StudyBridge tutor for students and learners of all ages in India. Explain in simple words, step by step, using short paragraphs. Keep the answer under 200 words unless the student asks for more. For maths and science, show the working. If the question is in Telugu, answer in Telugu; otherwise answer in English. Do not copy textbook text; explain in your own words. If the student seems very upset, be kind and suggest talking to a trusted adult, and mention that Tele-MANAS 14416 is a free helpline in India. Never ask for personal details. End with one short question to check understanding."+(ctx?"\nTopic context: "+ctx:"")+"\nStudent's question: "+q;
   try{
     var res=await sm(prompt,{cache:false,onText:function(r){out.textContent=r.text}});
     if(res&&res.text)out.textContent=res.text;
   }catch(e){
-    var c=e&&e.code;
-    out.textContent=c==="rate_limited"?"The tutor is busy. Please wait a minute and try again, or tap Send on WhatsApp.":c==="not_granted"?"The tutor was not allowed in this view. Please tap Send on WhatsApp and we will answer you.":"Sorry, the tutor could not answer now. Please tap Send on WhatsApp and we will answer you.";
+    offlineHelp(q,out);
   }
 }
 function fmt(sec){var m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
