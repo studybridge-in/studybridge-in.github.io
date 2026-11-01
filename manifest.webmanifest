@@ -1,0 +1,16 @@
+{
+  "name": "EdutechBridge",
+  "short_name": "EdutechBridge",
+  "description": "Free lessons, quizzes and flashcards for students, by StudyBridge.",
+  "start_url": "./learn.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F5FB",
+  "theme_color": "#3F5EF0",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

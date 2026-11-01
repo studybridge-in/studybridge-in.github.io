@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Free lessons, quizzes and flashcards for 12 subjects, with a daily fact and a focus timer. By StudyBridge.">
 <link rel="canonical" href="https://studybridge-in.github.io/learn.html">
-<title>StudyBridge Learn</title>
+<title>EdutechBridge</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600;700&display=swap">
 <style>
 html{color-scheme:light}body{margin:0}
@@ -120,11 +120,15 @@ footer a{color:var(--brand);font-weight:600}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
 
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5EF0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="logo"><i>SB</i><span>StudyBridge Learn</span></div>
+    <div class="logo"><i>SB</i><span>EdutechBridge</span></div>
     <div class="streak" id="streak"></div>
   </header>
   <main id="app" class="stack"></main>
@@ -577,5 +581,6 @@ function handle(b){
 render();
 </script>
 
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
 </body>
 </html>
