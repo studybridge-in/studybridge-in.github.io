@@ -118,6 +118,19 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 footer{margin-top:28px;padding-bottom:8px;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:6px}
 footer a{color:var(--brand);font-weight:600}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+.keyfirst{background:var(--warm-soft);border-color:var(--warm)}
+.keyfirst h3{font-size:19px}
+.kp.big li{font-size:18px;line-height:1.5;padding-left:26px}
+.kp.big li::before{width:10px;height:10px;top:.55em}
+details.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:0}
+details.box>summary{cursor:pointer;list-style:none;padding:16px 18px;font-family:var(--display);font-weight:700;font-size:18px;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:56px}
+details.box>summary::-webkit-details-marker{display:none}
+details.box>summary::after{content:"+";color:var(--brand);font-size:24px;line-height:1}
+details.box[open]>summary::after{content:"\2212"}
+details.box>summary:focus-visible{outline:3px solid var(--warm);outline-offset:2px;border-radius:16px}
+.boxbody{padding:0 18px 18px}
+.quick{background:var(--good-bg);border:1px solid var(--good);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.quick small{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--good);font-weight:700}
 </style>
 
 <link rel="manifest" href="https://studybridge-in.github.io/manifest.webmanifest">
@@ -447,10 +460,10 @@ function askBox(key,ctx,title,hint){
 function learnView(){
   var chips='<div class="chips">'+SUBJ.map(function(x){return '<button class="chip'+(x.id===lsub?' on':'')+'" data-act="lsub" data-id="'+x.id+'">'+esc(x.n)+'</button>'}).join("")+'</div>';
   var s=sub(lsub);
-  var rows=L[lsub].map(function(t,i){return '<button class="trow" data-act="topic" data-s="'+lsub+'" data-i="'+i+'"><span>'+esc(t.t)+'</span><em>Open</em></button>'}).join("");
-  return '<div class="stack"><div><h1>Lessons</h1><p class="sub" style="margin-top:6px">Simple explanations with key points and practice questions. Written in our own words, for Class 6 to 10 level. Chapter names in your textbook may differ.</p></div>'+
-  chips+'<h2>'+esc(s.n)+' topics</h2><div class="stack" style="gap:10px">'+rows+'</div>'+
-  askBox("main","","Search or ask a doubt","Type a word like photosynthesis or Pythagoras to find a lesson, or send your doubt on WhatsApp.")+'</div>';
+  var rows=L[lsub].map(function(t,i){return '<button class="trow" data-act="topic" data-s="'+lsub+'" data-i="'+i+'"><span>'+(i+1)+'. '+esc(t.t)+'</span><em>Open</em></button>'}).join("");
+  return '<div class="stack"><div><h1>Lessons</h1><p class="sub" style="margin-top:6px">Tap a topic. The key points come first.</p></div>'+
+  askBox("main","","Search or ask a doubt","Type a word like photosynthesis or Pythagoras.")+
+  chips+'<h2>'+esc(s.n)+' topics</h2><div class="stack" style="gap:10px">'+rows+'</div></div>';
 }
 function topicView(){
   var s=sub(view.s),t=L[view.s][view.i];
@@ -459,9 +472,10 @@ function topicView(){
   var qa=t.qa.map(function(x){return '<details class="qa"><summary>'+esc(x[0])+'</summary><div class="a">'+esc(x[1])+'</div></details>'}).join("");
   return '<div class="stack"><button class="back" data-act="learnback">← '+esc(s.n)+' topics</button>'+
   '<div class="row" style="align-items:center;flex-wrap:nowrap"><span class="badge" style="--h:'+s.h+'">'+esc(s.s)+'</span><h1 style="font-size:26px">'+esc(t.t)+'</h1></div>'+
-  ps+'<div class="card stack" style="gap:10px"><h3>Key points</h3><ul class="kp">'+ks+'</ul></div>'+
-  '<h2>Practice questions</h2><p class="sub">Try each one first. Then tap to see the answer.</p><div class="stack" style="gap:10px">'+qa+'</div>'+
-  askBox("topic","Topic: "+t.t+" ("+s.n+")","Still confused?","Ask about this topic in your own words.")+
+  '<div class="card keyfirst stack" style="gap:12px"><h3>Key points: remember these</h3><ul class="kp big">'+ks+'</ul></div>'+
+  '<details class="box"><summary>Read the full explanation</summary><div class="boxbody stack" style="gap:12px">'+ps+'</div></details>'+
+  '<details class="box"><summary>Practice questions ('+t.qa.length+')</summary><div class="boxbody stack" style="gap:10px"><p class="sub">Try first, then tap to see the answer.</p>'+qa+'</div></details>'+
+  '<details class="box"><summary>Still confused? Ask a doubt</summary><div class="boxbody">'+askBox("topic","Topic: "+t.t+" ("+s.n+")","Ask about this topic","Ask in your own words.")+'</div></details>'+
   '<div class="row"><button class="btn" style="flex:1" data-act="quiz" data-id="'+view.s+'">Take the '+esc(s.n)+' quiz</button><button class="btn alt" style="flex:1" data-act="cards" data-id="'+view.s+'">Flashcards</button></div></div>';
 }
 var STOP={the:1,and:1,what:1,why:1,how:1,who:1,when:1,where:1,which:1,is:1,are:1,was:1,does:1,did:1,can:1,you:1,for:1,with:1,that:1,this:1,from:1,about:1,give:1,tell:1,explain:1,meaning:1,define:1,solve:1,find:1,write:1,please:1};
@@ -480,7 +494,7 @@ function searchLessons(q){
 function offlineHelp(q,out){
   var r=searchLessons(q),h;
   if(r.length){
-    h='<p><b>These lessons may help:</b></p><div class="stack" style="gap:8px;margin-top:8px">'+r.map(function(x){return '<button class="trow" data-act="topic" data-s="'+x.s+'" data-i="'+x.i+'"><span>'+esc(x.t)+' <small style="font-weight:400;color:var(--muted)">('+esc(x.n)+')</small></span><em>Open</em></button>'}).join("")+'</div><p class="note" style="margin-top:10px">Not what you wanted? Tap Send on WhatsApp and we will answer you.</p>';
+    var top=L[r[0].s][r[0].i];h='<div class="quick"><small>Start with this lesson</small><b>'+esc(top.t)+'</b><span>Key point: '+esc(top.k[0])+'</span></div>'+'<p style="margin-top:12px"><b>These lessons may help:</b></p><div class="stack" style="gap:8px;margin-top:8px">'+r.map(function(x){return '<button class="trow" data-act="topic" data-s="'+x.s+'" data-i="'+x.i+'"><span>'+esc(x.t)+' <small style="font-weight:400;color:var(--muted)">('+esc(x.n)+')</small></span><em>Open</em></button>'}).join("")+'</div><p class="note" style="margin-top:10px">Not what you wanted? Tap Send on WhatsApp and we will answer you.</p>';
   }else h='<p>We could not find a matching lesson yet. Please tap <b>Send on WhatsApp</b>. Your doubt is already typed in, and we will answer you.</p>';
   out.style.whiteSpace="normal";out.innerHTML=h;
 }
