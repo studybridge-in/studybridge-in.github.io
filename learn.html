@@ -389,6 +389,8 @@ var PLANS={
   teacher:{n:"Teacher",p:500,pr:"₹500",who:"For teachers and tutors"},
   adult:{n:"Adult learner",p:250,pr:"₹250",who:"For adults who want to learn any subject"}
 };
+var APP=/[?&]app=1\b/.test(location.search);   // the Play Store app: free part only, no payment text
+var TUTOR_URL="https://script.google.com/macros/s/AKfycbySFzaRFIeON0dLEDLzgd1Sy4bAl7kknbqsOHQTMlAbKVF-jh3StGi1fd0ILF7Maj_p/exec";   // paste the AI helper web app link here, between the quotes
 var UPI_ID="7894464108@ybl";   // put your UPI ID here (for example name@bank). Leave empty to share payment details on WhatsApp.
 var CODE_HASHES=["98f2e7b8819d3aa760618df65c7357b152726d2b95fc1f5033fc04f278241208", "2b4505a345de9a4afba8acf57d2a057490a172bd14d76af78101d3fe1646a99a", "12995c58f1041e43003a12d37c8fdb21ac7383de43b35c53a1b414bcf0eac3d6", "1ae57f376f35d965a422497d7a4ca66253a67361bbe1a1242e8b5ccf445d36ff", "cce9c03ea5616e1de4910464367e36942561dd327cc4beddb9007ebe6a8caca4", "ed0d5b1fbac2702f29169bcdb6018d4ead71b9243d294f2d8a25e732dd8602d1", "50648e72b3b397b3d78c2667f814c1d7f3c34bca3575af5015dfbc6c604231d9", "9dbcda3be2fb81113f05d68a6f38ac4623d206a29ab1eea974cd1d751fe73c8d", "953d79d9dc975499ddc2eb58caa3514b3f126e64336bdfef6cee0a85d94a2163", "4a931af29e853f564a1d34864a42e0b3cf101f4dfb717b41eacb7c148aa6c467", "d965327763790a84b8da98652dfc6807c174d94619e2bb1b197f7b954a374178", "1a021a2ef42fcb45d946077bba08c3b25596a2e70fe3d0a4b571e9798fd4e089", "7e1facb8a761fb7e92d3d9c2da5d114f9e55d566b5821312d3c6421bb5fcec63", "df584025d396f5a96e1827c848b81729b37da5ad7a4aeef49123c7b3fc3f1f6f", "91fe0186123dd6a108a873cf2c82305bdc47d31d65fff97091d08577f57326ac", "3e75a20433e710cffdc110766c0de8f3197b92e08272a9b3b801b46eca9cd8d0", "752aa39ea620d7f3479f80bba2081f6109db361745cd31d0471e846344ef796c", "1680378e1a9e87b83bea5f392b9662a77064038e6c9d77faf588bae46dfc26f7", "6b0ec03e73051f4d78e20841ed072a24833b85a58f6a927433513e1fe014d8f6", "2491bf950d8e9cb6c05a4f110335c0e1d66e9ef07feef9611aec9506109f9d0d", "be0d59785f84c225742f321467df87173772c5cb213ccbc6ba3ae8349dbf1907", "610e7154d9273e4569e1bbc0e740f88e06c606cb3c12cdf81a689f00c1797521", "7c74fc935b746a27fed9af01024b3c32985b0686aceb2aa8b51fd07711da0921", "cbed577b1003a7076f535b3cc6b3230c2808fd44bc8aeb75946e3586588d6ec6", "37047628780e7bf375619a13bdd4a5abc8b1f66be7b0ab969c9e8ed8f05be3d7", "a1779e31d2455e650bc33250bf88019160d725d60f36ba784218dcaf85784c1c", "3566648f90d2357a610acad8ba0b6ce0578f743ebf2fd08c7a3a667b438d0864", "7f758a93abb67f49d6c9565e71778193804c9ed6c59c4bc77841de4a873a50ef", "8cc4a8de9260a7aaa9fff510636e24d92292360e0d622df17422450d10242d24", "50fc435548ecb129bfcbf9d23369f0cc91d7cf5435384b673808a194f8a609e8", "55aca3e83c2bd12b93360b1e08731540a2a86388c1a67e378e144f5b1b63d801", "dff587d963d25a09e572ab962dce132febe3100171d51e8772a154f4de0c0af2", "1756e2635ea7594f4d53d9983e709995b3f6b53530abc8a3df11532c6d5067ad", "e324a8f49f3242c779bdf59fb0db093941c6410f71ae0a25cba4ccf7b286b4dd", "61ae0c2fe7e630bf65df3d93f78d6affe01ca33d67a69ae40a8d9e45ffc48f5d", "8b45b95f3d4c558a62c35a06ab3d51a25107862c7c39903995630536707d1ac9", "edcb80cd392d7eb4c00f2dee6ee655b66cbabf7c87c9a473b338a6f01517142d", "18a62824cb8a7046ddeb3d938fb7ab4f6d8eb065950952a33aa1d81b6308d95c", "a7fd9a9f64442927f8942d8e39b034eb1fcbb08a84380078c24209aedf09cac9", "ed1a379104c862f5319d9acfd5fd07bc212d2c1c1d06317b1bdc2b6aeefa6608", "d2e4d8af99554543f2cfaea0554ecd2772da2f05cf6c169ebc362d54c79a62fd", "8f692e5053b00712a87087c82c766685fb9b4aac908b040ee389bf254d84307c", "1a9c89cb10fd7d832f7f4dedd5f0485ab2cfd1cc7aee42686348dfae6c4820af", "98ecca93e7c7f3ae9954996bdc81676e9d72716077a5bdf9e39ce95852483b0e", "8ab0a955bc448ff7a35c4f82029881b2a2629c01f5ff6218d1fbc51507568b83", "ea4c339946e36136654fbd3eb94c0fab19b0050db19319c5b8b9c20270721f4f", "3a122dd3364d7fdd03a92326793e8eb64e5ad590cdea044882f0b587d9780aa1", "6512d662662eb9ca96f307280fe840f54aaa973679660bd5319c55d6312df7d4", "c0ba6911d0f0d2cca7f4fd41eeca2cea5b4997c219ae29736bc130c667a14896", "3ad5cb69d235b53923d86a856242d6812d5ff51d4a010823b9898f0bf2731668", "4d90323aa05473d7646511f5cb29cc24e3ce2888a2c6397c92ff017a12facc64", "2b50ff4465a8f42d133c415dcb2730ac91b385b3bd2d995f3bf29256c272d636", "661b9ba43b92b21b3b894ba2d11f5869b1abff9222445809353e3eee23281b85", "f7c470dd9070d601c523e2cc63ad651aebce989b636df0504be0e034e3fcd04f", "470dfbbb1dfd7966394c7d873609b9588f224c47dd755c8a37f1083719e83292", "0cc609cb2f0e5f6b6d2cf8cab172d23b9e4289294abee76165cd10b0bea8655e", "e29d57cb5ad2f578538fd1af9000e411744ef61f3cff4dcf8803b1ffd91389c4", "9b0681e56085eb3b0de75f197bd77495faa235aebb63023fd3be03a08c67ff54", "57825512e562fca1a09db5b57c3e82938643de1c7d369b5791d7fa449c2c047f", "5370c30243463d6b6389f8a3c2774fbdb656f61abb0cf36bfd6f6b31871a5494", "f36477b4823abf256f2d1a8ff5542ae1965e3c6633dc29df9ddcc133c2b33ff8", "92b821effa64c1b9a1d7975c9200cc55961dcad6379dbf1cc3ffac851392b8d1", "b6b40476aeee4d8c8dcfbafe8d7f4d26391483f68937ab1a99b6a95e4bff1718", "aa149ce26f5bae1ac67b7c4de3269c4bfaf71b5a031822a9b734e07328923471", "2ddcdea3f315a908f1a28af7d4b34525cf58d721cbe9aa975d65f03a78920f37", "3a721d77706d017c32867db1e007ba25f11e76e6f08d2b0d623ae8846c9622bb", "30946193cfd6e535b067859bd135793d932847610409255c1313be5cc8b3157a", "1761601912dbb49ad0e1272b65f0d84a44f43fbaa163f2db27a6eaf793c947de", "19d74024dfa6ed2e1594334b5860c64d29e5e159195a6ac154d92a86486baf95", "f032ae4bca522906a90a9f7ba5b092e576eccae24a2b13b083db779f2b364ef5", "53d82a8eefbac552051c94bbf948703e1d8a8d30f769b830caa79d1d8ca6af74", "960bf3e968bc97ec90f49d6501ec67e26a2c688c47615cf7364b1363934d4205", "bd2c34b93b51b7b9850b194cccd6b0d7f8819ea2aa9802147d4ced2d6ec88026", "a9901a8d791eed35a3b64ad1ebe828c52d95c8ca09288d2a7bb4e5a31f127613", "f7acaf53e9c8d14595d19973c3c95481cb1924ca2c55bea9a4b5d194c4f3b227"];
 var PLANKEY={STU:"student",TCH:"teacher",ADU:"adult"};
@@ -403,9 +405,11 @@ async function activate(code){
   store.access={plan:PLANKEY[c.slice(0,3)],until:untilDate()};save();return "";
 }
 function lockCard(title){
+  if(APP)return '<div class="card stack"><h3>Coming soon</h3><p class="sub">This part is not in the app yet.</p></div>';
   return '<div class="card stack lock" style="gap:12px"><h3>'+esc(title)+'</h3><p class="sub">Your free part: the first lesson of every subject, and the Focus timer. A package gives you full access for 5 months.</p><button class="btn full" data-act="tab" data-t="plans">See packages</button></div>';
 }
 function planCard(){
+  if(APP)return '';
   var a=access();
   if(a)return '<div class="card keyfirst"><b>Full access is on</b><p class="sub" style="margin-top:4px">'+esc(PLANS[a.plan].n)+' package, until '+esc(a.until)+'.</p></div>';
   return '<div class="card keyfirst"><b>Free to use</b><p class="sub" style="margin-top:4px">Try the first lesson of every subject for free. A package gives full access for 5 months.</p><button class="btn full" style="margin-top:10px" data-act="tab" data-t="plans">See packages</button></div>';
@@ -516,7 +520,7 @@ function askBox(key,ctx,title,hint){
 function learnView(){
   var chips='<div class="chips">'+SUBJ.map(function(x){return '<button class="chip'+(x.id===lsub?' on':'')+'" data-act="lsub" data-id="'+x.id+'">'+esc(x.n)+'</button>'}).join("")+'</div>';
   var s=sub(lsub);
-  var rows=L[lsub].map(function(t,i){return '<button class="trow" data-act="topic" data-s="'+lsub+'" data-i="'+i+'"><span>'+(i+1)+'. '+esc(t.t)+'</span><em>'+(!access()&&i>0?'Locked':'Open')+'</em></button>'}).join("");
+  var rows=L[lsub].map(function(t,i){if(APP&&i>0)return '';return '<button class="trow" data-act="topic" data-s="'+lsub+'" data-i="'+i+'"><span>'+(i+1)+'. '+esc(t.t)+'</span><em>'+(!access()&&i>0?'Locked':'Open')+'</em></button>'}).join("");
   return '<div class="stack"><div><h1>Lessons</h1><p class="sub" style="margin-top:6px">Tap a topic. The first lesson of each subject is free.</p></div>'+
   askBox("main","","Search or ask a doubt","Type a word like photosynthesis or Pythagoras.")+
   chips+'<h2>'+esc(s.n)+' topics</h2><div class="stack" style="gap:10px">'+rows+'</div></div>';
@@ -543,6 +547,7 @@ function searchLessons(q){
   if(!words.length)return[];
   var res=[];
   SUBJ.forEach(function(sj){L[sj.id].forEach(function(t,i){
+    if(APP&&i>0)return;
     var title=t.t.toLowerCase(),body=(t.e.join(" ")+" "+t.k.join(" ")).toLowerCase(),qa=t.qa.map(function(x){return x[0]+" "+x[1]}).join(" ").toLowerCase(),sc=0;
     words.forEach(function(w){var st=w.length>4?w.slice(0,w.length-1):w;if(title.indexOf(st)>=0)sc+=6;if(qa.indexOf(st)>=0)sc+=3;if(body.indexOf(st)>=0)sc+=2});
     if(sc>0)res.push({s:sj.id,i:i,t:t.t,n:sj.n,sc:sc});
@@ -550,11 +555,53 @@ function searchLessons(q){
   res.sort(function(a,b){return b.sc-a.sc});
   return res.slice(0,4);
 }
+function findQA(q){
+  var words=q.toLowerCase().replace(/[^a-z0-9ఀ-౿ ]/g," ").split(/\s+/).filter(function(w){return w.length>2&&!STOP[w]});
+  if(!words.length)return null;
+  var best=null,bs=0;
+  SUBJ.forEach(function(sj){L[sj.id].forEach(function(t,ti){
+    if(APP&&ti>0)return;
+    t.qa.forEach(function(x){
+      var qq=x[0].toLowerCase(),sc=0;
+      words.forEach(function(w){var st=w.length>4?w.slice(0,w.length-1):w;if(qq.indexOf(st)>=0)sc++});
+      if(sc>bs){bs=sc;best={q:x[0],a:x[1],t:t.t,n:sj.n}}
+    });
+  })});
+  var need=words.length<=2?words.length:Math.ceil(words.length*0.75);
+  return bs>=need?best:null;
+}
+var GEN={first:1,india:1,indian:1,king:1,name:1,what:1,which:1,who:1,why:1,does:1,make:1,makes:1,work:1,called:1,mean:1,means:1,help:1,know:1};
+function qwordsOf(q){return q.toLowerCase().replace(/[^a-z0-9ఀ-౿ ]/g," ").split(/\s+/).filter(function(w){return w.length>2&&!STOP[w]&&!GEN[w]})}
+function stemOf(w){return w.length>4?w.slice(0,w.length-1):w}
+function findSentence(q){
+  var words=qwordsOf(q);if(!words.length)return null;
+  var ss=[];
+  SUBJ.forEach(function(sj){L[sj.id].forEach(function(t,ti){
+    if(APP&&ti>0)return;
+    t.e.join(" ").split(/[.!?]\s+/).forEach(function(x){if(x.length>25)ss.push({s:x.trim(),low:x.toLowerCase(),t:t.t,n:sj.n})});
+  })});
+  var df={};
+  words.forEach(function(w){var st=stemOf(w);df[w]=ss.filter(function(o){return o.low.indexOf(st)>=0}).length});
+  var total=0;words.forEach(function(w){total+=1/(1+df[w])});
+  if(!total)return null;
+  var best=null,bs=0;
+  ss.forEach(function(o){var sc=0;words.forEach(function(w){if(df[w]>0&&o.low.indexOf(stemOf(w))>=0)sc+=1/(1+df[w])});if(sc>bs){bs=sc;best=o}});
+  return (best&&bs>=0.6*total)?best:null;
+}
+function answerBox(label,q,a,from){return '<div class="quick"><small>'+label+'</small>'+(q?'<b>'+esc(q)+'</b>':'')+'<span>'+esc(a)+'</span><span class="note">From: '+esc(from)+'</span></div>'}
+function lessonRow(x){return '<button class="trow" data-act="topic" data-s="'+x.s+'" data-i="'+x.i+'"><span>'+esc(x.t)+' <small style="font-weight:400;color:var(--muted)">('+esc(x.n)+')</small></span><em>Open</em></button>'}
 function offlineHelp(q,out){
-  var r=searchLessons(q),h;
-  if(r.length){
-    var top=L[r[0].s][r[0].i];h='<div class="quick"><small>Start with this lesson</small><b>'+esc(top.t)+'</b><span>Key point: '+esc(top.k[0])+'</span></div>'+'<p style="margin-top:12px"><b>These lessons may help:</b></p><div class="stack" style="gap:8px;margin-top:8px">'+r.map(function(x){return '<button class="trow" data-act="topic" data-s="'+x.s+'" data-i="'+x.i+'"><span>'+esc(x.t)+' <small style="font-weight:400;color:var(--muted)">('+esc(x.n)+')</small></span><em>Open</em></button>'}).join("")+'</div><p class="note" style="margin-top:10px">Not what you wanted? Tap Send on WhatsApp and we will answer you.</p>';
-  }else h='<p>We could not find a matching lesson yet. Please tap <b>Send on WhatsApp</b>. Your doubt is already typed in, and we will answer you.</p>';
+  var r=searchLessons(q),qa=findQA(q),sn=qa?null:findSentence(q),h="";
+  var more=r.slice(0,3).map(lessonRow).join("");
+  if(qa){
+    h+=answerBox("Answer from our lessons",qa.q,qa.a,qa.t+" ("+qa.n+")");
+    if(more)h+='<p style="margin-top:12px"><b>More lessons on this:</b></p><div class="stack" style="gap:8px;margin-top:8px">'+more+'</div>';
+  }else if(sn){
+    h+=answerBox("Answer from our lessons",null,sn.s+".",sn.t+" ("+sn.n+")");
+    if(more)h+='<p style="margin-top:12px"><b>More lessons on this:</b></p><div class="stack" style="gap:8px;margin-top:8px">'+more+'</div>';
+  }else{
+    h+='<p><b>We do not have an exact answer for this yet.</b></p><p class="note">Please tap Send on WhatsApp. Your question is already typed in, and we will answer you.</p>';
+  }
   out.style.whiteSpace="normal";out.innerHTML=h;
 }
 async function askTutor(key,ctx){
@@ -562,6 +609,7 @@ async function askTutor(key,ctx){
   var q=ta.value.trim();out.hidden=false;
   if(!q){out.textContent="Please type your doubt first.";return}
   out.style.whiteSpace="pre-wrap";out.textContent="Looking...";
+  if(TUTOR_URL){try{var rr=await fetch(TUTOR_URL+"?q="+encodeURIComponent((ctx?ctx+". ":"")+q));var jj=await rr.json();if(jj&&jj.ok&&jj.text){out.textContent=jj.text;return}}catch(e){}}
   var sm=null;try{sm=await (window.claude&&window.claude.use?window.claude.use("sample"):null)}catch(e){sm=null}
   if(!sm){offlineHelp(q,out);return}
   var prompt="You are the StudyBridge tutor for students and learners of all ages in India. Explain in simple words, step by step, using short paragraphs. Keep the answer under 200 words unless the student asks for more. For maths and science, show the working. If the question is in Telugu, answer in Telugu; otherwise answer in English. Do not copy textbook text; explain in your own words. If the student seems very upset, be kind and suggest talking to a trusted adult, and mention that Tele-MANAS 14416 is a free helpline in India. Never ask for personal details. End with one short question to check understanding."+(ctx?"\nTopic context: "+ctx:"")+"\nStudent's question: "+q;
