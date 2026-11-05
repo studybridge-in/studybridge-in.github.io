@@ -1,5 +1,5 @@
 // EdutechBridge offline cache: the app keeps working without internet after the first visit.
-var CACHE = "edutechbridge-v1";
+var CACHE = "edutechbridge-v2";
 var FILES = ["./", "./learn.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }));
